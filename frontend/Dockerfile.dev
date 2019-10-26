@@ -1,0 +1,39 @@
+FROM node:12.4.0-alpine
+
+# Install yarn
+RUN apk update && \
+    apk add --no-cache fftw-dev gcc g++ make libc6-compat && \
+    apk add git && \
+    apk add python && \
+    apk add yarn && \
+    rm -rf /var/cache/apk/*
+
+RUN yarn global add cross-env
+RUN yarn global add bs-platform
+RUN yarn global add reason-cli@3.3.2-linux
+
+RUN yarn global add serve
+
+# Copy just the package.json first to install deps
+ADD package.json .
+ADD bsconfig.json .
+ADD graphql_schema.json .
+ADD tailwind.js .
+ADD razzle.config.js .
+ADD /src /src
+ADD /public /public
+ADD yarn.lock .
+
+WORKDIR .
+
+# install dependencies via npm
+RUN yarn --pure-lockfile
+
+# Now add source code & build
+RUN yarn build
+
+EXPOSE 3000
+
+ENV NODE_ENV production
+
+ENTRYPOINT yarn start:prod

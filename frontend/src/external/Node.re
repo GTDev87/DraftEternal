@@ -1,0 +1,1 @@
+[@bs.module "node-fetch"] external fetch : ApolloClient.fetch = "default"

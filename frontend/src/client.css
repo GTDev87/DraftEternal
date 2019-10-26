@@ -1,0 +1,180 @@
+html, body {
+  min-height: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.__rsnav___item > div {
+  display: inherit;
+}; /* For side nav */
+
+@media (min-width: 576px) {
+  html, body {
+    font-size: 12px
+  }
+}
+
+@media (min-width: 768px) {
+  html, body {
+    font-size: 13px
+  }
+}
+
+@media (min-width: 992px) {
+  html, body {
+    font-size: 14px
+  }
+}
+
+@media (min-width: 1200px) {
+  html, body {
+    font-size: 16px
+  }
+}
+
+textarea {
+  border: none;
+  overflow: auto;
+  outline: none;
+
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+body {
+  margin: 0;
+  height: 100%;
+  padding: 0;
+  font-family: -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    Helvetica,
+    Arial,
+    sans-serif,
+    "Apple Color Emoji",
+    "Segoe UI Emoji",
+    "Segoe UI Symbol";
+}
+#root{
+  height: 100%;
+}
+
+.noButtonHover:active { outline:none; }
+.noButtonHover:focus { outline:none; }
+
+@media (max-width: 539.98px) {
+  #root{
+    font-size: 8px;
+  }
+}
+
+@media (min-width: 540px) and (max-width: 718.98px) {
+  #root{
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 720px) and (max-width: 959.98px) {
+  #root{
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1139.98px) {
+  #root{
+    font-size: 14px;
+  }
+}
+
+@media (min-width: 1140px) {
+  #root{
+    font-size: 16px;
+  }
+}
+
+h1.h1 {
+  font-size: 2em;
+  font-weight: 400;
+}
+
+h2.h2 {
+  font-size: 1.6em;
+  font-weight: 400;
+}
+
+h3.h3 {
+  font-size: 1.3em;
+  font-weight: bolder;
+}
+
+.nav-link {
+  cursor: pointer;
+}
+
+a.NavLink.nav-link {
+  border-radius: .25rem;
+  border-top-right-radius: auto;
+  border-top-left-radius: auto;
+  border-bottom-right-radius: auto;
+  border-bottom-left-radius: auto;
+}
+
+a.NavLink.nav-link.active {
+  background-color: #bfddf9;
+}
+
+ul.nav-tabs {
+  border-bottom: none;
+}
+
+a.NavLink.nav-link {
+  border-color: #dee2e6 #dee2e6 #dee2e6 #dee2e6;
+  z-index: 9999;
+}
+
+li.NavItem.nav-item {
+  margin-left: .2em;
+  margin-right: .2em;
+}
+
+.QuestionNumberHeader {
+  text-align: center;
+}
+
+.tab-content {
+  flex: 2;
+  overflow: auto;
+}
+
+.tab-pane {
+  height: 100%;
+}
+
+.container-fluid {
+     padding:0;
+}
+.App {
+  text-align: center;
+}
+.App-header {
+  margin: 0 auto;
+}
+
+.App-intro {
+  padding: 0 1rem;
+  line-height: 1.5;
+}
+
+.App-logo {
+  max-width: 20rem;
+}
+
+.btn {
+  display: block;
+  margin: 0 auto;
+}

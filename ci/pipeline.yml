@@ -1,0 +1,6 @@
+resources:
+  - name: r_o
+    type: git
+    source: &repo-source
+      uri: https://github.com/GTDev87/r_o
+      branch: master

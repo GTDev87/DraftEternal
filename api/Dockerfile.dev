@@ -1,0 +1,33 @@
+FROM bitwalker/alpine-elixir-phoenix:1.8.1
+# trust ^
+
+# Install posgres
+RUN apk --update add postgresql-client
+
+# Install hex
+RUN mix local.hex --force
+
+# Install rebar
+# RUN apk add --no-cache build-base
+RUN mix local.rebar --force
+
+# Install the Phoenix framework itself
+RUN mix archive.install https://github.com/phoenixframework/archives/raw/master/phoenix_new.ez --force
+
+# add files
+COPY apps apps
+COPY mix.exs mix.exs
+COPY config config
+
+# getting depedencies
+
+RUN mix deps.get
+
+WORKDIR .
+EXPOSE 4000
+EXPOSE 5432
+
+ENV ASSESSMENT_DB_URL $ASSESSMENT_DB_URL
+ENV PROVIDER_DB_URL $PROVIDER_DB_URL
+
+ENTRYPOINT mix ecto.migrate_seed && mix event_store.init && mix phx.server

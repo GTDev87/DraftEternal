@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: frontend
+  annotations:
+    kubernetes.io/ingress.class: "public"
+    nginx.org/ssl-services: "frontend"
+    nginx.ingress.kubernetes.io/rewrite-target: /
+  namespace: default
+spec:
+  rules:
+  - host: drafteternal-workers.dubcell.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: frontend
+          servicePort: 3000
+  - host: api.drafteternal-workers.dubcell.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: api
+          servicePort: 4001
+  - host: auth.drafteternal-workers.dubcell.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: api
+          servicePort: 4000

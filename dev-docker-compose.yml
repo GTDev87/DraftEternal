@@ -1,0 +1,70 @@
+version: '2'
+
+services:
+  db:
+    image: "datacore/postgresql" # TODO do i trust this?
+    networks:
+      - webnet
+    ports:
+      - "5432:5432"
+    labels:
+      kompose.volume.size: 5Gi
+    volumes:
+      - "dbdata:/var/lib/postgresql"
+    environment:
+      DB_PASS: postgres
+      DB_USER: postgres
+      DB_NAME: provider_api,drafteternal_api_dev
+
+  api:
+    image: gtdev87/drafteternal-api
+    expose:
+      - "4000"
+      - "4001"
+    build:
+      context: api
+      dockerfile: Dockerfile.dev
+    networks:
+      - webnet
+    ports:
+      - "4000:4000"
+      - "4001:4001"
+    depends_on:
+      - db
+    environment:
+      # dev
+      DB_HOSTNAME_DEV: db
+      MIX_ENV: dev # That's key
+      PORT: 4000
+      DB_USERNAME_DEV: postgres
+      DB_PASSWORD_DEV: postgres
+      DB_NAME_DEV: provider_api
+      # prod
+      DB_HOSTNAME_DEV: db
+      MIX_ENV: dev # That's key
+      PORT: 4000
+      DB_USERNAME_DEV: postgres
+      DB_PASSWORD_DEV: postgres
+      DB_NAME_DEV: provider_api
+    env_file:
+      - dev-secret-config.env
+
+  frontend:
+    image: gtdev87/drafteternal-frontend
+    expose:
+      - "3000"
+    build:
+      context: frontend
+      dockerfile: Dockerfile.dev
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: development
+    depends_on:
+      - api
+
+volumes:
+  dbdata:
+
+networks:
+  webnet:
