@@ -1,6 +1,7 @@
 type _data = {
   id: UUID.t,
   email: string,
+  cubeIds: list(Schema.Cube.id),
 };
 
 type _local = User_Local.Model.Record.t;
@@ -11,6 +12,7 @@ let _defaultData = (id) => {
   {
     id: id,
     email: "",
+    cubeIds: [],
   }
   /* UI */
 };

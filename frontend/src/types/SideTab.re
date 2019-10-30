@@ -1,33 +1,30 @@
 type t =
   | Library
-  | Builder
-;
+  | CreateCube
+  | MyCube(Schema.Cube.id);
 
 type action =
   | ToLibrary
-  | ToBuilder;
+  | ToCreateCube
+  | ToMyCube(Schema.Cube.id);
 
-let all = [
+let all = (myCubeIds) => ([
   Library,
-  Builder,
-];
-
-let toString = (sideTabType : t) : string =>
-  switch(sideTabType){
-  | Library => "Cube Library"
-  | Builder => "Cube Builder"
-  };
+  CreateCube,
+] @ Belt.List.map(myCubeIds, (c: Schema.Cube.id) => MyCube(c)));
 
 let toIcon = (sideTabType : t) =>
   switch(sideTabType){
   | Library => <CubeIcon />
-  | Builder => <CubeIcon />
+  | CreateCube => <CubeIcon />
+  | MyCube(_) => <CubeIcon />
   };
 
 let toAction = (sideTabType : t): action =>
   switch(sideTabType){
   | Library => ToLibrary
-  | Builder => ToBuilder
+  | CreateCube => ToCreateCube
+  | MyCube(id) => ToMyCube(id)
   };
 
 let tabReducer = (): (t, (action) => unit) =>
@@ -35,10 +32,9 @@ let tabReducer = (): (t, (action) => unit) =>
     (_, action) =>
       switch (action) {
       | ToLibrary => Library
-      | ToBuilder => Builder
+      | ToCreateCube => CreateCube
+      | ToMyCube(id) => MyCube(id)
       },
       Library,
   );
 
-let toSidebarImageName = (sideTabType : t) =>
-  <SidebarImageName icon={toIcon(sideTabType)} text=toString(sideTabType) />

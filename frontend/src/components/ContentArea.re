@@ -3,19 +3,19 @@ let cx = Css.cx;
 let tw = Css.tw;
 
 let contentArea = [%bs.raw {| css(tw`
+  h-full
 `)|}];
 
 [@react.component]
-let make = (~tab, ~user: option(User.Model.Record.t), ~normalized, ~updateNormalizr) => {
+let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr) => {
   <div className=contentArea>
     {
-      switch(tab) {
+      switch(user.local.tab) {
       | SideTab.Library => <div/>
-      | SideTab.Builder =>
-          switch(user){
-          | Some(user) => <CubeBuilder id={user.local.newCubeId} normalized updateNormalizr />
-          | None => <div />
-          }
+      | SideTab.CreateCube =>
+          <CubeBuilder user cardIds normalized updateNormalizr />
+      | SideTab.MyCube(id) =>
+          <CubeBuilder user cardIds normalized updateNormalizr />
       }
     }
   </div>

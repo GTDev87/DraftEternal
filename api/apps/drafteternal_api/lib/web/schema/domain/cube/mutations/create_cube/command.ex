@@ -4,6 +4,7 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Mutations.CreateCube.Command do
     name: "",
     description: "",
     creator_id: "",
+    display: "",
     card_ids: [],
   ]
 
@@ -15,6 +16,7 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Mutations.CreateCube.Command do
       id: cube.id,
       name: cube.name,
       description: cube.description,
+      display: cube.display,
       creator_id: cube.creator_id,
       card_ids: cube.card_ids,
     }

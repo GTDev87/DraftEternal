@@ -18,16 +18,41 @@ let sideBarBold = [%bs.raw {| css(tw`
 
 let sideBarWithBold = cx(sideBarLine, sideBarBold);
 
+let toString = (sideTabType : SideTab.t, normalized) : string =>
+  switch(sideTabType){
+  | SideTab.Library => "Cube Library"
+  | SideTab.CreateCube => "+ Create Cube"
+  | SideTab.MyCube(id) => {
+      let optionCube =
+        MyNormalizr.Converter.Cube.Remote.getRecord(normalized, id);
+
+      switch(optionCube) {
+      | None => ""
+      | Some(cube) => cube.data.name
+      }
+    }
+  };
+
+
 [@react.component]
-let make = (~tab, ~chooseTab) => {
+let make = (~user: User.Model.Record.t, ~chooseTab, ~normalized) => {
   <div className=sideBar>
     {
-      SideTab.all
-      |> Belt.List.map(_, (t) =>
-           <div onClick={(e) => chooseTab(t)} className=(tab === t ? sideBarWithBold : sideBarLine)>
-            {SideTab.toSidebarImageName(t)}
-           </div>
-      )
+      SideTab.all(user.data.cubeIds)
+      |> Belt.List.map(_, (t) => {
+          let text = toString(t, normalized);
+          <div
+            key=text
+            onClick={(e) => {
+              Js.log("t");
+              Js.log(t);
+              chooseTab(t) |> ignore
+            }}
+            className=(user.local.tab === t ? sideBarWithBold : sideBarLine)
+          >
+            <SidebarImageName icon={SideTab.toIcon(t)} text />
+          </div>
+      })
       |> Utils.ReasonReact.listToReactArray
     }
   </div>

@@ -16,12 +16,12 @@ defmodule DraftEternalApi.Web.Schema.General.Queries do
       all_cards
       |> Enum.filter(fn c -> Map.get(c, "EternalID") !== nil end)
 
-    non_nil_cards
-    |> Enum.map(fn c -> DraftEternalApi.Web.Lib.KeyValue.set(Map.get(c, "EternalID"), c) end)
+    id_fn = fn c -> "#{Map.get(c, "SetNumber")}-#{Map.get(c, "EternalID")}" end;
 
-    card_ids = 
-      non_nil_cards
-      |> Enum.map(fn c -> Map.get(c, "EternalID") end)
+    non_nil_cards
+    |> Enum.map(fn c -> DraftEternalApi.Web.Lib.KeyValue.set(id_fn.(c), c) end)
+
+    card_ids = Enum.map(non_nil_cards, id_fn)
 
     {:ok, card_ids}
   end

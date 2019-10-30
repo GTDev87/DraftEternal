@@ -9,6 +9,7 @@ defmodule DraftEternalApi.Web.Model.Cube do
     # field :id, Ecto.UUID
     field(:name, :string)
     field(:description, :string)
+    field(:display, :string)
     belongs_to(:user, DraftEternalApi.Web.Model.User, foreign_key: :creator_id)
 
     timestamps()
@@ -18,6 +19,7 @@ defmodule DraftEternalApi.Web.Model.Cube do
     @model,
     id: String.t(),
     name: String.t(),
+    display: String.t(),
     description: String.t(),
     creator_id: String.t(),
   )

@@ -1,16 +1,25 @@
-[@bs.module "reactstrap"]
-external comp : ReasonReact.reactClass = "Modal";
+module Interop = {
+  [@bs.module "reactstrap"] [@react.component]
+  external make: (
+    ~isOpen: bool,
+    ~toggle: (unit) => Js.Promise.t(unit),
+    ~style: Js.Nullable.t(string),
+    ~size: string,
+    ~autoFocus: Js.Nullable.t(bool),
+    ~children: React.element,
+    unit
+  ) => React.element = "Modal";
+};
 
-let make = (~isOpen, ~onRequestClose, ~style=?, ~autoFocus=?, children) => {
-  ReasonReact.wrapJsForReason(
-    ~reactClass=comp,
-    ~props={
-      "isOpen": isOpen,
-      "toggle": onRequestClose,
-      "style": Js.Nullable.fromOption(style),
-      "size": "lg",
-      "autoFocus": Js.Nullable.fromOption(autoFocus),
-    },
-    children
-  )
+[@react.component]
+let make = (~isOpen, ~onRequestClose, ~style=?, ~autoFocus=?, ~children) => {
+  <Interop
+    isOpen
+    toggle=onRequestClose
+    style=Js.Nullable.fromOption(style)
+    size="lg"
+    autoFocus=Js.Nullable.fromOption(autoFocus)
+  >
+    {children}
+  </Interop>
 };

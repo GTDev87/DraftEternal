@@ -4,6 +4,7 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Events.CubeCreated.Event do
     id: "",
     name: "",
     description: "",
+    display: "",
     creator_id: "",
     card_ids: [],
   ]

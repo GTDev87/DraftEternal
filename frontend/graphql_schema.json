@@ -66,6 +66,30 @@
             {
               "type": {
                 "ofType": {
+                  "ofType": {
+                    "ofType": {
+                      "ofType": null,
+                      "name": "InfluenceType",
+                      "kind": "ENUM"
+                    },
+                    "name": null,
+                    "kind": "NON_NULL"
+                  },
+                  "name": null,
+                  "kind": "LIST"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "colors",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
                   "ofType": null,
                   "name": "Int",
                   "kind": "SCALAR"
@@ -106,6 +130,22 @@
                 "kind": "NON_NULL"
               },
               "name": "detailsUrl",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": null,
+                  "name": "ID",
+                  "kind": "SCALAR"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "eternalId",
               "isDeprecated": false,
               "description": null,
               "deprecationReason": null,
@@ -158,9 +198,17 @@
             {
               "type": {
                 "ofType": {
-                  "ofType": null,
-                  "name": "String",
-                  "kind": "SCALAR"
+                  "ofType": {
+                    "ofType": {
+                      "ofType": null,
+                      "name": "InfluenceType",
+                      "kind": "ENUM"
+                    },
+                    "name": null,
+                    "kind": "NON_NULL"
+                  },
+                  "name": null,
+                  "kind": "LIST"
                 },
                 "name": null,
                 "kind": "NON_NULL"
@@ -218,6 +266,22 @@
               "description": null,
               "deprecationReason": null,
               "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": null,
+                  "name": "String",
+                  "kind": "SCALAR"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "thumbnailUrl",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
             }
           ],
           "enumValues": null,
@@ -234,15 +298,19 @@
               "type": {
                 "ofType": {
                   "ofType": {
-                    "ofType": null,
-                    "name": "ID",
-                    "kind": "SCALAR"
+                    "ofType": {
+                      "ofType": null,
+                      "name": "ID",
+                      "kind": "SCALAR"
+                    },
+                    "name": null,
+                    "kind": "NON_NULL"
                   },
                   "name": null,
-                  "kind": "NON_NULL"
+                  "kind": "LIST"
                 },
                 "name": null,
-                "kind": "LIST"
+                "kind": "NON_NULL"
               },
               "name": "cardIds",
               "isDeprecated": false,
@@ -254,17 +322,53 @@
               "type": {
                 "ofType": {
                   "ofType": {
-                    "ofType": null,
-                    "name": "Card",
-                    "kind": "OBJECT"
+                    "ofType": {
+                      "ofType": null,
+                      "name": "Card",
+                      "kind": "OBJECT"
+                    },
+                    "name": null,
+                    "kind": "NON_NULL"
                   },
                   "name": null,
-                  "kind": "NON_NULL"
+                  "kind": "LIST"
                 },
                 "name": null,
-                "kind": "LIST"
+                "kind": "NON_NULL"
               },
               "name": "cards",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": null,
+                  "name": "User",
+                  "kind": "OBJECT"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "creator",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": null,
+                  "name": "ID",
+                  "kind": "SCALAR"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "creatorId",
               "isDeprecated": false,
               "description": null,
               "deprecationReason": null,
@@ -290,6 +394,22 @@
               "type": {
                 "ofType": {
                   "ofType": null,
+                  "name": "String",
+                  "kind": "SCALAR"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "display",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": null,
                   "name": "ID",
                   "kind": "SCALAR"
                 },
@@ -297,6 +417,22 @@
                 "kind": "NON_NULL"
               },
               "name": "id",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": null,
+                  "name": "ID",
+                  "kind": "SCALAR"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "name",
               "isDeprecated": false,
               "description": null,
               "deprecationReason": null,
@@ -315,6 +451,47 @@
           "fields": null,
           "enumValues": null,
           "description": "The `ID` scalar type represents a unique identifier, often used to\nrefetch an object or as key for a cache. The ID type appears in a JSON\nresponse as a String; however, it is not intended to be human-readable.\nWhen expected as an input type, any string (such as `\"4\"`) or integer\n(such as `4`) input value will be accepted as an ID."
+        },
+        {
+          "possibleTypes": null,
+          "name": "InfluenceType",
+          "kind": "ENUM",
+          "interfaces": null,
+          "inputFields": null,
+          "fields": null,
+          "enumValues": [
+            {
+              "name": "FIRE",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null
+            },
+            {
+              "name": "JUSTICE",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null
+            },
+            {
+              "name": "PRIMAL",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null
+            },
+            {
+              "name": "SHADOW",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null
+            },
+            {
+              "name": "TIME",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null
+            }
+          ],
+          "description": null
         },
         {
           "possibleTypes": null,
@@ -454,6 +631,102 @@
             {
               "type": {
                 "ofType": {
+                  "ofType": {
+                    "ofType": {
+                      "ofType": null,
+                      "name": "Card",
+                      "kind": "OBJECT"
+                    },
+                    "name": null,
+                    "kind": "NON_NULL"
+                  },
+                  "name": null,
+                  "kind": "LIST"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "collection",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": {
+                    "ofType": {
+                      "ofType": null,
+                      "name": "ID",
+                      "kind": "SCALAR"
+                    },
+                    "name": null,
+                    "kind": "NON_NULL"
+                  },
+                  "name": null,
+                  "kind": "LIST"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "collectionIds",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": {
+                    "ofType": {
+                      "ofType": null,
+                      "name": "ID",
+                      "kind": "SCALAR"
+                    },
+                    "name": null,
+                    "kind": "NON_NULL"
+                  },
+                  "name": null,
+                  "kind": "LIST"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "cubeIds",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": {
+                    "ofType": {
+                      "ofType": null,
+                      "name": "Cube",
+                      "kind": "OBJECT"
+                    },
+                    "name": null,
+                    "kind": "NON_NULL"
+                  },
+                  "name": null,
+                  "kind": "LIST"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "cubes",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
                   "ofType": null,
                   "name": "String",
                   "kind": "SCALAR"
@@ -478,46 +751,6 @@
                 "kind": "NON_NULL"
               },
               "name": "id",
-              "isDeprecated": false,
-              "description": null,
-              "deprecationReason": null,
-              "args": []
-            },
-            {
-              "type": {
-                "ofType": {
-                  "ofType": {
-                    "ofType": null,
-                    "name": "Card",
-                    "kind": "OBJECT"
-                  },
-                  "name": null,
-                  "kind": "NON_NULL"
-                },
-                "name": null,
-                "kind": "LIST"
-              },
-              "name": "myCollection",
-              "isDeprecated": false,
-              "description": null,
-              "deprecationReason": null,
-              "args": []
-            },
-            {
-              "type": {
-                "ofType": {
-                  "ofType": {
-                    "ofType": null,
-                    "name": "Cube",
-                    "kind": "OBJECT"
-                  },
-                  "name": null,
-                  "kind": "NON_NULL"
-                },
-                "name": null,
-                "kind": "LIST"
-              },
-              "name": "myCubes",
               "isDeprecated": false,
               "description": null,
               "deprecationReason": null,

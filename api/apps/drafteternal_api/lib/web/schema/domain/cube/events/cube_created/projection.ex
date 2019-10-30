@@ -7,11 +7,10 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Events.CubeCreated.Projection d
   def execute(multi, %Event{} = created) do
 
     Enum.reduce(created.card_ids, multi, fn card_id, multi ->
-
       CubeCard.Multi.insert(multi, %CubeCard{
         id: UUID.uuid4(),
-        card_id: card_id,
         cube_id: created.id,
+        card_id: card_id,
       })
     end)
     |> Cube.Multi.insert(%Cube{
@@ -19,6 +18,7 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Events.CubeCreated.Projection d
       name: created.name,
       description: created.description,
       creator_id: created.creator_id,
+      display: created.display,
     })
   end
 end

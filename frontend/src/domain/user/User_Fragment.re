@@ -5,6 +5,9 @@ module GraphFragment = [%graphql
     fragment userFields on User {
       id
       email
+      cubes {
+        ...Cube.Model.Fragment.Fields
+      }
     }
   |}
 ];
@@ -17,4 +20,8 @@ let fragmentType = "User";
 let fromObject = (obj: Fields.t): Record._data => {
   id: obj##id,
   email: obj##email,
+  cubeIds:
+    obj##cubes
+    |> Belt.List.fromArray
+    |> Belt.List.map(_, Cube.Model.objectToId),
 };

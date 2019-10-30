@@ -5,10 +5,14 @@ module CardContainer = ApolloQuery.Container(Query.Card.M);
 [@react.component]
 let make = (~errorComponent, ~children) => {
   <CardContainer query={Query.Card.M.make()} errorComponent>
-    ...{(~response) =>
+    ...{(~response) => {
+      let cardIds =
+        response##cards
+        |> Belt.List.fromArray
+        |> Belt.List.map(_, Card.Model.objectToId);
       <MemberContainer query={Query.Member.M.make()} errorComponent>
-        ...{(~response) => children(~member=response##member)}
+        ...{(~response) => children(~member=response##member, ~cardIds)}
       </MemberContainer>
-    }
+    }}
   </CardContainer>
 };

@@ -9,6 +9,7 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Mutations.CreateCube.GraphQL do
     field(:id, non_null(:id))
     field(:name, non_null(:string))
     field(:description, non_null(:string))
+    field(:display, non_null(:string))
     field(:creator_id, non_null(:id))
     field(:card_ids, Notation.non_null(Notation.list_of(Notation.non_null(:id))))
   end
