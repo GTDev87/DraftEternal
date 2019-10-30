@@ -20,7 +20,7 @@ let dashboardContentArea = [%bs.raw {| css(tw`
   flex-1
   flex-grow
   flex
-  overflow-y-scroll
+  overflow-y-hidden
 `)|}];
 
 let dashboardContentAreaSideBar = [%bs.raw {| css(tw`
@@ -42,7 +42,7 @@ let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr) => {
   let optionUser =
     MyNormalizr.Converter.User.Remote.getRecord(normalized, id);
 
-  switch(optionUser){
+  switch(MyNormalizr.Converter.User.Remote.getRecord(normalized, id)){
   | None => <div/>
   | Some(user) => {
       let updateUser = action => {

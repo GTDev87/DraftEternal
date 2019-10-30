@@ -22,10 +22,7 @@ let cubeBuilderCardPickerAreaSingleCard = [%bs.raw {| css(tw`
 
 let cubeBuilderCardSelectionArea = [%bs.raw {| css(tw`
   w-1/4
-  h-full
   bg-teal-dark
-  table-auto
-  overflow-y-scroll
 `)|}];
 
 [@react.component]
@@ -57,11 +54,7 @@ let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr)
       }
     </div>
     <div className=cubeBuilderCardSelectionArea>
-      {
-        [Card.Model.idToTypedId("0-3")] @ user.local.builderCube.data.cardIds
-        |> Belt.List.map(_, (cardId: Schema.Card.id) => <CardSmallLayout key=(Card.Model.getUUIDFromId(cardId)) id=cardId normalized />)
-        |> Utils_ReasonReact.listToReactArray
-      }
+      <CardSelectionArea user normalized updateNormalizr />
     </div>
   </div>
 };

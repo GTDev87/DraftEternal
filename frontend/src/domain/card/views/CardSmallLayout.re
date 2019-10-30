@@ -8,20 +8,21 @@ let cardSmallLayout = [%bs.raw {| css(tw`
   text-white
   font-bold
   text-xs
+  mb-px
 `)|}];
 
 let cardSmallLayoutColor = (colors: list(InfluenceType.t)) =>
   switch(Belt.List.head(colors)) {
-  | None => [%bs.raw {| css(tw` bg-grey `)|}]
+  | None => [%bs.raw {| css(tw` bg-grey-darkest `)|}]
   | Some(color) =>
     switch(Belt.List.length(colors)) {
     | 1 =>
         switch(color) {
-        | `FIRE => [%bs.raw {| css(tw` bg-red `)|}]
-        | `TIME => [%bs.raw {| css(tw` bg-gold `)|}]
-        | `PRIMAL => [%bs.raw {| css(tw` bg-blue `)|}]
-        | `JUSTICE => [%bs.raw {| css(tw` bg-green `)|}]
-        | `SHADOW => [%bs.raw {| css(tw` bg-purple `)|}]
+        | `FIRE => [%bs.raw {| css(tw` bg-red-darker `)|}]
+        | `TIME => [%bs.raw {| css(tw` bg-yellow-darker `)|}]
+        | `PRIMAL => [%bs.raw {| css(tw` bg-blue-dark `)|}]
+        | `JUSTICE => [%bs.raw {| css(tw` bg-green-darker `)|}]
+        | `SHADOW => [%bs.raw {| css(tw` bg-purple-dark `)|}]
         }
     | _ => [%bs.raw {| css(tw` bg-black `)|}]
     }
@@ -29,14 +30,14 @@ let cardSmallLayoutColor = (colors: list(InfluenceType.t)) =>
   
 
 let cardSmallLayoutCost = [%bs.raw {| css(tw`
-  w-1/6
+  w-1/10
   flex
   justify-center
   items-center
 `)|}];
 
 let cardSmallLayoutImage = [%bs.raw {| css(tw`
-  w-1/6
+  w-1/10
 `)|}];
 
 let cardSmallLayoutImageImg = [%bs.raw {| css(tw`
@@ -44,14 +45,20 @@ let cardSmallLayoutImageImg = [%bs.raw {| css(tw`
 `)|}];
 
 let cardSmallLayoutName = [%bs.raw {| css(tw`
-  w-1/2
+  w-7/10
   flex
   items-center
-  pl-4
+  pl-1
+  border-teal
+  border-solid
+  border-0
+  border-r
+  whitespace-no-wrap
+  overflow-x-hidden
 `)|}];
 
 let cardSmallLayoutCount = [%bs.raw {| css(tw`
-  w-1/6
+  w-1/10
   flex
   justify-center
   items-center
