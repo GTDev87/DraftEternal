@@ -43,14 +43,14 @@ server
     // console.log("assets.client.css = %j", assets.client.css);
     // console.log("req.url = %j", req.url);
 
-    const markup = renderToString(<App title="Smoothie" initialUrl={req.url} server={true} />);
+    const markup = renderToString(<App title="Draft Eternal" initialUrl={req.url} server={true} />);
     res.send(
       `<!doctype html>
     <html lang="">
     <head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta charSet='utf-8' />
-        <title>Tiro powered by Real and Open</title>
+        <title>Draft Eternal</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         ${
       !!assets.client.css

@@ -26,7 +26,7 @@ services:
       context: api
       dockerfile: Dockerfile.dev
       args:
-        - ASSESSMENT_DB_URL=${ASSESSMENT_DB_URL}
+        - DRAFTETERNAL_DB_URL=${DRAFTETERNAL_DB_URL}
         - PROVIDER_DB_URL=${PROVIDER_DB_URL}
         
     networks:
@@ -39,7 +39,7 @@ services:
       - db
     environment:
       - MIX_ENV=dev
-      - ASSESSMENT_DB_URL=${ASSESSMENT_DB_URL}
+      - DRAFTETERNAL_DB_URL=${DRAFTETERNAL_DB_URL}
       - PROVIDER_DB_URL=${PROVIDER_DB_URL}
     env_file:
       - secret-config.env

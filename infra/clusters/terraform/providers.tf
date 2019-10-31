@@ -36,9 +36,9 @@ module "digital-ocean-drafteternal" {
   }
 
   # Digital Ocean
-  cluster_name = "drafteternal"
+  cluster_name = "drafteternal-k8"
   region       = "nyc1"
-  dns_zone     = "dubcell.com"
+  dns_zone     = "drafteternal.com"
 
   # configuration
   ssh_fingerprints = [

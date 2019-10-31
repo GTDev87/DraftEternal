@@ -33,11 +33,11 @@ config :phoenix, :stacktrace_depth, 20
 
 username = System.get_env("DB_USERNAME_DEV") || "postgres"
 password = System.get_env("DB_PASSWORD_DEV") || "postgres"
-database = System.get_env("DB_ASSESSMENT_NAME_DEV") || "drafteternal_api_dev"
+database = System.get_env("DB_DRAFTETERNAL_NAME_DEV") || "drafteternal_api_dev"
 hostname = System.get_env("DB_HOSTNAME_DEV") || "localhost"
 
-url = System.get_env("ASSESSMENT_DB_URL") || "ecto://#{username}:#{password}@#{hostname}/#{database}"
-ssl = !!System.get_env("ASSESSMENT_DB_URL")
+url = System.get_env("DRAFTETERNAL_DB_URL") || "ecto://#{username}:#{password}@#{hostname}/#{database}"
+ssl = !!System.get_env("DRAFTETERNAL_DB_URL")
 
 # Configure your database
 config :drafteternal_api, DraftEternalApi.Web.Repo,
@@ -54,11 +54,11 @@ config :drafteternal_api, DraftEternalApi.Web.WriteRepo,
 
 username_commanded = System.get_env("DB_COMMANDED_USERNAME_DEV") || "postgres"
 password_commanded = System.get_env("DB_COMMANDED_PASSWORD_DEV") || "postgres"
-database_commanded = System.get_env("DB_COMMANDED_ASSESSMENT_NAME_DEV") || "drafteternal_commanded_api_dev"
+database_commanded = System.get_env("DB_COMMANDED_DRAFTETERNAL_NAME_DEV") || "drafteternal_commanded_api_dev"
 hostname_commanded = System.get_env("DB_COMMANDED_HOSTNAME_DEV") || "localhost"
 
-url_commanded = System.get_env("ASSESSMENT_COMMANDED_DB_URL") || "ecto://#{username_commanded}:#{password_commanded}@#{hostname_commanded}/#{database_commanded}"
-ssl_commanded = !!System.get_env("ASSESSMENT_COMMANDED_DB_URL")
+url_commanded = System.get_env("DRAFTETERNAL_COMMANDED_DB_URL") || "ecto://#{username_commanded}:#{password_commanded}@#{hostname_commanded}/#{database_commanded}"
+ssl_commanded = !!System.get_env("DRAFTETERNAL_COMMANDED_DB_URL")
 
 config :eventstore, EventStore.Storage,
   serializer: Commanded.Serialization.JsonSerializer,

@@ -7,7 +7,7 @@ import App from './init'; // BuckleScript output directory
 
 hydrate(
   <App
-    title="Tiro powered by Real and Open"
+    title="Draft Eternal"
     server={false}
   />,
   document.getElementById('root')
