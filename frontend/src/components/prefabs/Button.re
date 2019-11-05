@@ -1,31 +1,37 @@
-let component = ReasonReact.statelessComponent("Button");
+let css = Css.css;
+let cx = Css.cx;
+let tw = Css.tw;
 
-type theme =
-  | CTA;
+let buttonOuterStyle = [%bs.raw {| css(tw`
+  w-full
+  p-2
+`)|}];
 
-let styleButton = (theme: theme) =>
-  switch (theme) {
-  | CTA =>
-    ReactDOMRe.Style.make(
-      ~padding=".25em 1.4em",
-      ~color="white",
-      ~backgroundColor=Colors.primary,
-      ~borderRadius=".2em",
-      ~cursor="pointer",
-      (),
-    )
-  };
+let buttonStyle = [%bs.raw {| css(tw`
+  bg-teal-dark
+  px-4
+  py-4
+  text-white
+  bg-blue
+  rounded
+  cursor-pointer
+  w-full
+`)|}];
 
 [@react.component]
-let make = (~onClick=?, ~theme=CTA, ~autoFocus=?, ~style=?, ~disabled=?, ~children) => {
-    ReasonReact.createDomElement(
-      "button",
-      ~props={
-        "autoFocus": Belt.Option.getWithDefault(autoFocus, true),
-        "onClick": onClick,
-        "style": Utils.Dom.combineStyles(style, styleButton(theme)),
-        "disabled": Js.Nullable.fromOption(disabled)
-      },
-      children,
-    )
+let make = (~onClick=?, ~autoFocus=?, ~style=?, ~disabled=?, ~children) => {
+  <div className=buttonOuterStyle>
+    {
+      ReasonReact.createDomElement(
+        "button",
+        ~props={
+          "autoFocus": Belt.Option.getWithDefault(autoFocus, true),
+          "onClick": onClick,
+          "className": buttonStyle,
+          "disabled": Js.Nullable.fromOption(disabled)
+        },
+        [|children|],
+      )
+    }
+  </div>
 };

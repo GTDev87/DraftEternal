@@ -7,15 +7,15 @@ let contentArea = [%bs.raw {| css(tw`
 `)|}];
 
 [@react.component]
-let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr) => {
+let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
   <div className=contentArea>
     {
       switch(user.local.tab) {
       | SideTab.Library => <div/>
       | SideTab.CreateCube =>
-          <CubeBuilder user cardIds normalized updateNormalizr />
+          <CubeBuilder user cardIds normalized updateNormalizr index />
       | SideTab.MyCube(id) =>
-          <CubeBuilder user cardIds normalized updateNormalizr />
+          <CubeBuilder user cardIds normalized updateNormalizr index />
       }
     }
   </div>

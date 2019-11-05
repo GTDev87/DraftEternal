@@ -1,10 +1,14 @@
 module CardContainer = ApolloQuery.Container(Query.Card.M);
 
+let index = FlexSearch.create();
+
 [@react.component]
 let make = () =>
 
   <CardContainer query={Query.Card.M.make()} errorComponent={<div />} >
     ...{(~response) => {
+      
+
       let cardIds =
         response##cards
         |> Belt.List.fromArray
@@ -15,7 +19,18 @@ let make = () =>
 
           <NormalizerInit records=[User.Record.Record(guest)]>
             ...{(~normalized, ~updateNormalizr) => {
-              <DashboardLayout id={User.Model.idToTypedId(guest.data.id)} normalized updateNormalizr cardIds/>
+              
+              React.useEffect1(() => {
+                /* Once */
+                cardIds
+                |> MyNormalizr.Converter.Card.idListToFilteredItems(_, MyNormalizr.Converter.Card.Remote.getRecord(normalized))
+                |> Belt.List.map(_, (card: Card.Model.Record.t) => FlexSearch.addValue(index, card.data.id, card.data.name ++ " " ++ card.data.cardText));
+                None; /* May need a cleanup function */
+              }, [||]);
+
+              
+              
+              <DashboardLayout id={User.Model.idToTypedId(guest.data.id)} normalized updateNormalizr cardIds index/>
             }}
           </NormalizerInit>
         }>
@@ -24,7 +39,15 @@ let make = () =>
             ...{(user) =>
               <NormalizerInit records=[User.Record.Record(user)]>
                 ...{(~normalized, ~updateNormalizr) => {
-                  <DashboardLayout id={User.Model.idToTypedId(user.data.id)} normalized updateNormalizr cardIds/>
+                  React.useEffect1(() => {
+                    /* Once */
+                    cardIds
+                    |> MyNormalizr.Converter.Card.idListToFilteredItems(_, MyNormalizr.Converter.Card.Remote.getRecord(normalized))
+                    |> Belt.List.map(_, (card: Card.Model.Record.t) => FlexSearch.addValue(index, card.data.id, card.data.name ++ " " ++ card.data.cardText));
+                    None; /* May need a cleanup function */
+                  }, [||]);
+
+                  <DashboardLayout id={User.Model.idToTypedId(user.data.id)} normalized updateNormalizr cardIds index/>
                 }}
               </NormalizerInit>
             }

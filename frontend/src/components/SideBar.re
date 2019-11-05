@@ -43,11 +43,7 @@ let make = (~user: User.Model.Record.t, ~chooseTab, ~normalized) => {
           let text = toString(t, normalized);
           <div
             key=text
-            onClick={(e) => {
-              Js.log("t");
-              Js.log(t);
-              chooseTab(t) |> ignore
-            }}
+            onClick={(e) => chooseTab(t) |> ignore}
             className=(user.local.tab === t ? sideBarWithBold : sideBarLine)
           >
             <SidebarImageName icon={SideTab.toIcon(t)} text />

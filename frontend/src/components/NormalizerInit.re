@@ -10,11 +10,7 @@ let make = (~records: list(ModelUtils.RootModel.record)=[], ~children) => {
     React.useReducer(
       (_, action) =>
         switch (action) {
-        | UpdateNormalizr(normalized) => {
-            Js.log("UpdateNormalizr normalized = ");
-            Js.log(normalized);
-            {normalized: normalized}
-          }
+        | UpdateNormalizr(normalized) => {normalized: normalized}
         },
         {
           normalized:

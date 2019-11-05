@@ -35,8 +35,8 @@ services:
       - "4000:4000"
       - "4001:4001"
       - "5432:5432"
-    depends_on:
-      - db
+    # depends_on:
+    #   - db
     environment:
       - MIX_ENV=dev
       - DRAFTETERNAL_DB_URL=${DRAFTETERNAL_DB_URL}

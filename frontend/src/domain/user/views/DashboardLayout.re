@@ -35,7 +35,7 @@ let dashboardContentAreaSelection = [%bs.raw {| css(tw`
 
 
 [@react.component]
-let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr) => {
+let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
 
   // let (user.local.tab, dispatch) = SideTab.tabReducer();
 
@@ -54,9 +54,6 @@ let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr) => {
         )
         |> updateNormalizr;
       };
-
-      Js.log("user.local.tab");
-      Js.log(user.local.tab);
 
       <div className=dashboardLayout>
         {
@@ -154,12 +151,10 @@ let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr) => {
             <SideBar user chooseTab={(t) => updateUser(User.Action.LocalAction(ChangeTab(t)))} normalized/>
           </div>
           <div className=dashboardContentAreaSelection>
-            <ContentArea user cardIds normalized updateNormalizr />
+            <ContentArea user cardIds normalized updateNormalizr index />
           </div>
         </div>
       </div>
-
     }
   }  
-  
 };
