@@ -7,7 +7,8 @@ type state = int;
 type action =
   | AddItems(int);
 
-let addedItems = 12;
+let addedItems = 24;
+let startItems = 48;
 
 let infinteScrollLoadNumbersArea = [%bs.raw {| css(tw`
   flex
@@ -29,7 +30,7 @@ let make = (~className: string, ~loader: React.element, ~children: list(React.el
       switch (action) {
       | AddItems(num) => min(Belt.List.length(children), numItems + num)
       },
-      addedItems
+      startItems
   );
   <div className>
     <div className=infinteScrollLoadNumbersArea>
@@ -42,9 +43,13 @@ let make = (~className: string, ~loader: React.element, ~children: list(React.el
             | Some(items) => items |> Utils.ReasonReact.listToReactArray
             }
       }
-      <Button onClick=((_) => dispatch(AddItems(addedItems)))>
-        {ReasonReact.string("Add more")}
-      </Button>
+      {
+        numItemsState < Belt.List.length(children) ?
+          <Button onClick=((_) => dispatch(AddItems(addedItems)))>
+            {ReasonReact.string("Add more")}
+          </Button> :
+          <div/>
+      }
     </div>
   </div>;
 };
