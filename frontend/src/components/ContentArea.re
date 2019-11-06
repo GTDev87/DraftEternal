@@ -12,6 +12,7 @@ let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr,
     {
       switch(user.local.tab) {
       | SideTab.Library => <div/>
+      | SideTab.SearchCard => <SearchCard cardIds normalized index onCardClick={_ => ()} />
       | SideTab.CreateCube =>
           <CubeBuilder user cardIds normalized updateNormalizr index />
       | SideTab.MyCube(id) =>

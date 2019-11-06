@@ -14,9 +14,6 @@ let cubeBuilder = [%bs.raw {| css(tw`
 
 let cubeBuilderCardPickerArea = [%bs.raw {| css(tw`
   w-3/4
-  h-full
-  flex
-  flex-col
 `)|}];
 
 let cubeBuilderScrollArea = [%bs.raw {| css(tw`
@@ -54,62 +51,15 @@ let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr,
     )
     |> updateNormalizr;
   };
-
-  let (query, dispatch) =
-    React.useReducer(
-      (state, action) =>
-        switch (action) {
-        | UpdateQuery(query) => (query == "") ? None : Some(query)
-        },
-      None
-    );
-
-  let updatedCardIds =
-    switch(query) {
-    | None => cardIds
-    | Some(query) =>
-        index
-        |> FlexSearch.search(_, query)
-        |> Belt.List.fromArray
-        |> Belt.List.map(_, Card.Model.idToTypedId)
-    };
   
   <div className=cubeBuilder>
     <div className=cubeBuilderCardPickerArea>
-      <div className=cubeBuilderCardSearchArea>
-        <TextInput
-          // className=inputClass
-          placeholder=("Search")
-          value={
-            switch(query){
-            | None => ""
-            | Some(text) => text
-            }
-          }
-          onTextChange={(t) => {
-            dispatch(UpdateQuery(t));
-            () |> Js.Promise.resolve; 
-          }}
-          autoFocus=false
-        />
-      </div>
-      
-      <InfiniteScrollLoadNumber
-        className=cubeBuilderScrollArea
-        loader={<div>{ReasonReact.string("LOADING...")}</div>}
-      >
-        {
-          Belt.List.map(updatedCardIds, (cId: Card.Model.idType) => {
-            <div
-              key=(Card.Model.getUUIDFromId(cId))
-              className=cubeBuilderCardPickerAreaSingleCard
-              onClick={(_) => User.Action.LocalAction(UpdateBuilderCube(AddCard(cId))) |> updateUser |> ignore}
-            >
-              <CardFullLayout id=cId normalized />
-            </div>
-          })
-        }
-      </InfiniteScrollLoadNumber>
+      <SearchCard
+        cardIds
+        normalized
+        index
+        onCardClick={(cId) => User.Action.LocalAction(UpdateBuilderCube(AddCard(cId))) |> updateUser |> ignore}
+      />
     </div>
     <div className=cubeBuilderCardSelectionArea>
       <CardSelectionArea user normalized updateUser />

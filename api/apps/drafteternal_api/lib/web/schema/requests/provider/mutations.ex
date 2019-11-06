@@ -5,8 +5,4 @@ defmodule DraftEternalApi.Web.Schema.Provider.Mutations do
   object :provider_mutation do
     import_fields(:create_user)
   end
-
-  object :member_mutation do
-    import_fields(:user_member_mutations)
-  end
 end

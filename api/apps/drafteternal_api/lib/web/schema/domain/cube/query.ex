@@ -10,7 +10,7 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Query do
       resolve(fn id, _, info -> {:ok, "123"} end)
     end
 
-    field :name, non_null(:id) do
+    field :name, non_null(:string) do
       # resolve(Web.Lib.BatchUtils.get_field(Web.Model.Profile, :id))
       resolve(fn id, _, info -> {:ok, "123"} end)
     end
@@ -37,12 +37,12 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Query do
 
     field :card_ids, non_null(list_of(non_null(:id))) do
       # resolve(Web.Lib.BatchUtils.get_field(Web.Model.Profile, :id))
-      resolve(fn id, _, info -> {:ok, "123"} end)
+      resolve(fn id, _, info -> {:ok, ["123"]} end)
     end
 
     field :cards, non_null(list_of(non_null(:card))) do
       # resolve(Web.Lib.BatchUtils.get_field(Web.Model.Profile, :id))
-      resolve(fn id, _, info -> {:ok, "123"} end)
+      resolve(fn id, _, info -> {:ok, ["123"]} end)
     end
   end
 end

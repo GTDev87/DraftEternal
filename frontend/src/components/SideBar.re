@@ -21,6 +21,7 @@ let sideBarWithBold = cx(sideBarLine, sideBarBold);
 let toString = (sideTabType : SideTab.t, normalized) : string =>
   switch(sideTabType){
   | SideTab.Library => "Cube Library"
+  | SideTab.SearchCard => "Search Card"
   | SideTab.CreateCube => "+ Create Cube"
   | SideTab.MyCube(id) => {
       let optionCube =

@@ -9,7 +9,7 @@ type action =
   | Nothing;
 
 module Handlers = {
-  let onTextChange = Debouncer.make(~wait=200, fn => fn());
+  let onTextChange = Debouncer.make(~wait=100, fn => fn());
 };
 
 let setContentRef = (r, {ReasonReact.state}) =>

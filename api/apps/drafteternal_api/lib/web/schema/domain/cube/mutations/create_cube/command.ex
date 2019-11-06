@@ -3,8 +3,8 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Mutations.CreateCube.Command do
     id: "",
     name: "",
     description: "",
-    creator_id: "",
     display: "",
+    creator_id: "",
     card_ids: [],
   ]
 
