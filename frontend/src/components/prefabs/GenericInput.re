@@ -53,11 +53,7 @@ let make =
         | UpdateInternal(internalValue) => ReactUpdate.UpdateWithSideEffects(
             {...state, internalValue},
             (_) => {
-              Handlers.onTextChange(
-                () => {
-                  onTextChange(state.internalValue) |> ignore
-                }
-              )
+              Handlers.onTextChange(() => { onTextChange(state.internalValue) |> ignore })
               |> ignore;
               None;
             }

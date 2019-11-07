@@ -55,6 +55,7 @@ let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr,
   <div className=cubeBuilder>
     <div className=cubeBuilderCardPickerArea>
       <SearchCard
+        selectedCardIds=user.local.builderCube.data.cardIds
         cardIds
         normalized
         index

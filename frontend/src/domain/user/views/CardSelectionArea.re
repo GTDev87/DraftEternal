@@ -62,21 +62,11 @@ let make = (~user: User.Model.Record.t, ~normalized, ~updateUser) => {
       </div>
     </div>
     <div className=cardSelectionAreaSelectionsBox>
-      <div className=cardSelectionAreaSelections>
-        {
-          user.local.builderCube.data.cardIds
-          |> Belt.List.map(_, (cardId: Schema.Card.id) =>
-              <div
-                key={cardId |> Card.Model.getUUIDFromId}
-                className=cardSelectionAreaCardSmall
-                onClick={(_) => updateUser(User.Action.LocalAction(UpdateBuilderCube(RemoveCard(cardId)))) |> ignore}
-              >
-                <CardSmallLayout key=(Card.Model.getUUIDFromId(cardId)) id=cardId normalized />
-              </div>
-          )
-          |> Utils_ReasonReact.listToReactArray
-        }
-      </div>
+      <SmallDeckView
+        normalized
+        cardIds=user.local.builderCube.data.cardIds
+        cardSelect={(cardId) => updateUser(User.Action.LocalAction(UpdateBuilderCube(RemoveCard(cardId)))) |> ignore}
+      />
     </div>
     <div className=cardSelectionAreaOptions>
       <Cube_Mutation.CreateCube.ContainerMutation>

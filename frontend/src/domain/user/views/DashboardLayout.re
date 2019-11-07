@@ -61,7 +61,6 @@ let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr, ~index
 
       <div className=dashboardLayout>
         {
-
           <ReactModal
             autoFocus=false
             isOpen={user.local.modal !== None}
@@ -71,7 +70,7 @@ let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr, ~index
             {
               /* REMEMBER RESET ID IN LOCAL */
               switch (user.local.modal) {
-              | Some(SaveCube) => <SaveCubeContentModal user updateUser />
+              | Some(SaveCube) => <SaveCubeContentModal user updateUser normalized />
               | None => <> </>
               }
             }

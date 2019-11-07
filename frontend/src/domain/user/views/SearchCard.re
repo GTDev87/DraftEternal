@@ -22,6 +22,11 @@ let searchCardCardPickerAreaSingleCard = [%bs.raw {| css(tw`
   cursor-pointer
 `)|}];
 
+let searchCardCardPickerAreaSingleCardSelected = [%bs.raw {| css(tw`
+  opacity-25
+  cursor-not-allowed
+`)|}];
+
 let searchCardSearchArea = [%bs.raw {| css(tw`
   w-full
   flex
@@ -33,7 +38,7 @@ let searchCardSearchInputClass = [%bs.raw {| css(tw`
 
 
 [@react.component]
-let make = (~cardIds, ~normalized, ~index, ~onCardClick) => {
+let make = (~cardIds, ~normalized, ~index, ~onCardClick, ~selectedCardIds=?) => {
   let (query, dispatch) =
     React.useReducer(
       (_, action) =>
@@ -78,9 +83,13 @@ let make = (~cardIds, ~normalized, ~index, ~onCardClick) => {
       >
         {
           Belt.List.map(updatedCardIds, (cId: Card.Model.idType) => {
+            let selected =
+              Belt.Option.mapWithDefault(selectedCardIds, false, (selectedCardIds) => {
+                Belt.List.has(selectedCardIds, cId, (a, b) => a == b);
+              });
             <div
               key=(Card.Model.getUUIDFromId(cId))
-              className=searchCardCardPickerAreaSingleCard
+              className=cx(searchCardCardPickerAreaSingleCard, selected ? searchCardCardPickerAreaSingleCardSelected : "")
               onClick={(_) => onCardClick(cId)}
             >
               <CardFullLayout id=cId normalized />
