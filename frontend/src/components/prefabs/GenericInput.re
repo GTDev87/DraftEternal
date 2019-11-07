@@ -1,12 +1,10 @@
 type state = {
   internalValue: string,
   contentRef: ref(option(Dom.element)),
-  textChanging: bool,
 };
 
 type action =
-  | UpdateInternal(string)
-  | Nothing;
+  | UpdateInternal(string);
 
 module Handlers = {
   let onTextChange = Debouncer.make(~wait=100, fn => fn());
@@ -48,32 +46,34 @@ let make =
   ) => {
 
   let (state, dispatch) =
-    React.useReducer(
-      (state, action) =>
+    ReactUpdate.useReducer(
+      {contentRef: ref(None), internalValue: value},
+      (action, state) =>
         switch (action) {
-        | UpdateInternal(internalValue) => {...state, internalValue, textChanging: true}
-        | Nothing => {...state, textChanging: false}
-        },
-      {contentRef: ref(None), internalValue: value, textChanging: false}
+        | UpdateInternal(internalValue) => ReactUpdate.UpdateWithSideEffects(
+            {...state, internalValue},
+            (_) => {
+              Handlers.onTextChange(
+                () => {
+                  onTextChange(state.internalValue) |> ignore
+                }
+              )
+              |> ignore;
+              None;
+            }
+        )
+      }
     );
 
   React.useEffect1(() => {
     /* Once */
+    Js.log("once");
     switch (state.contentRef^) {
     | Some(field) => setElementContents(field, isTextArea)
     | _ => ()
     };
     None; /* May need a cleanup function */
   }, [||]);
-
-  React.useEffect(() => {
-    /* Multiple */
-    switch(state.textChanging) {
-    | true => Handlers.onTextChange(() => onTextChange(state.internalValue) |> ignore)
-    | false => ()
-    };
-    None; /* May need a cleanup function */
-  });
   
   let computedStyle = Utils.Dom.combineStyles(style, editableTextAreaStyle);
   let onChange = event =>

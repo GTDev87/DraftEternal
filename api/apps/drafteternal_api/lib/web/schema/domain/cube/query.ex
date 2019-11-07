@@ -4,6 +4,8 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Query do
 
   alias DraftEternalApi.Web
 
+  import_types(DraftEternalApi.Web.Schema.Domain.Cube.Types)
+
   object :cube do
     field :id, non_null(:id) do
       # resolve(Web.Lib.BatchUtils.get_field(Web.Model.Profile, :id))
@@ -20,9 +22,9 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Query do
       resolve(fn id, _, info -> {:ok, "123"} end)
     end
 
-    field :display, non_null(:string) do
+    field :display, non_null(:display_type) do
       # resolve(Web.Lib.BatchUtils.get_field(Web.Model.Profile, :id))
-      resolve(fn id, _, info -> {:ok, false} end)
+      resolve(fn id, _, info -> {:ok, DisplayType.private} end)
     end
 
     field :creator_id, non_null(:id) do

@@ -18,7 +18,8 @@
     "reason-apollo-hooks",
     "reason-apollo",
     "@glennsl/bs-json",
-    "re-debouncer"
+    "re-debouncer",
+    "reason-react-update"
   ],
   "ppx-flags": [
     "graphql_ppx/ppx"

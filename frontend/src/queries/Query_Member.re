@@ -2,7 +2,7 @@ module M = [%graphql
   {|
     query member {
       member {
-        ...User.Model.Fragment.Fields
+        ...User_Model.Fragment.Fields
       }
     }
   |}

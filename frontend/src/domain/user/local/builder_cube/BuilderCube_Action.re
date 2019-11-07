@@ -1,5 +1,7 @@
 type action =
   | UpdateName(string)
+  | UpdateDescription(string)
+  | SelectDisplay(DisplayType.t)
   | AddCard(Schema.Card.id)
   | RemoveCard(Schema.Card.id)
 ;
@@ -14,6 +16,8 @@ let has = (list, item) => /* look for belt has*/
 let reduce = (action, builderCube: model) =>
   switch (action) {
   | UpdateName(name) => {...builderCube, data: {...builderCube.data, name}}
+  | UpdateDescription(description) => {...builderCube, data: {...builderCube.data, description}}
+  | SelectDisplay(display) => {...builderCube, data: {...builderCube.data, display}}
   | AddCard(cardId) =>
     switch(has(builderCube.data.cardIds, cardId)) {
     | true => builderCube

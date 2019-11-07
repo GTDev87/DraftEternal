@@ -1,6 +1,7 @@
 type _record = {
-  builderCube: Cube.Model.Record.t,
+  builderCube: Cube_Model.Record.t,
   tab: SideTab.t,
+  modal: option(DashModal.t),
 };
 
 let _defaultRecord = id => {
@@ -10,9 +11,15 @@ let _defaultRecord = id => {
   module Rand = UUID.V5Random(UUIDSeedType);
 
   let newCubeId = Schema.Cube.stringToId(Rand.generateSeqUUID());
+
+  let newCubeId = Schema.Cube.stringToId(Rand.generateSeqUUID());
+  let cube = Cube_Model.Record.defaultWithId((), newCubeId);
+  let newCube = {...cube, data: {...cube.data, name: "New Cube"}};
+
   {
-    builderCube: Cube.Model.Record.defaultWithId((), newCubeId),
-    tab: Library,
+    builderCube: newCube,
+    tab: SearchCard,
+    modal: None
   };
 };
 

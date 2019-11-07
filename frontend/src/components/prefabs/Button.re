@@ -4,7 +4,6 @@ let tw = Css.tw;
 
 let buttonOuterStyle = [%bs.raw {| css(tw`
   w-full
-  p-2
 `)|}];
 
 let buttonStyle = [%bs.raw {| css(tw`
@@ -19,8 +18,8 @@ let buttonStyle = [%bs.raw {| css(tw`
 `)|}];
 
 [@react.component]
-let make = (~onClick=?, ~autoFocus=?, ~style=?, ~disabled=?, ~children) => {
-  <div className=buttonOuterStyle>
+let make = (~onClick=?, ~className=?, ~autoFocus=?, ~style=?, ~disabled=?, ~children) => {
+  <div className={cx(buttonOuterStyle, Belt.Option.getWithDefault(className, ""))}>
     {
       ReasonReact.createDomElement(
         "button",

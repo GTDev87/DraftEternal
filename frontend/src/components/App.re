@@ -6,9 +6,11 @@ let component = ReasonReact.statelessComponent("App");
 let makeJsx2 = (_children) => {
   ...component,
   render: _self => {
-    <ReasonApollo.Provider client=Client.instance>
-      <MemberPage />
-    </ReasonApollo.Provider>;
+    <ReasonApolloHooks.ApolloProvider client=Client.instance>
+      <ReasonApollo.Provider client=Client.instance>
+        <MemberPage />
+      </ReasonApollo.Provider>
+    </ReasonApolloHooks.ApolloProvider>;
   }
 };
 

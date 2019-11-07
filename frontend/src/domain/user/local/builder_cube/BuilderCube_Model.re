@@ -1,4 +1,4 @@
-type _record = Cube.Model.Record.t;
+type _record = Cube_Model.Record.t;
 
 let _defaultRecord = id => {
   module UUIDSeedType = {
@@ -7,7 +7,7 @@ let _defaultRecord = id => {
   module Rand = UUID.V5Random(UUIDSeedType);
 
   let newCubeId = Schema.Cube.stringToId(Rand.generateSeqUUID());
-  Cube.Model.Record.defaultWithId((), newCubeId);
+  Cube_Model.Record.defaultWithId((), newCubeId);
 };
 
 module Record = {

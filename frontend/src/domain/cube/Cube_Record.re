@@ -2,7 +2,7 @@ type _data = {
   id: UUID.t,
   name: string,
   description: string,
-  display: string,
+  display: DisplayType.t,
   cardIds: list(Schema.Card.id),
   creatorId: Schema.User.id,
 };
@@ -16,7 +16,7 @@ let _defaultData = (id) => {
     id: id,
     name: "",
     description: "",
-    display: "",
+    display: `PUBLIC,
     cardIds: [],
     creatorId: Schema.User.stringToId(""),
   }

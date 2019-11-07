@@ -394,8 +394,8 @@
               "type": {
                 "ofType": {
                   "ofType": null,
-                  "name": "String",
-                  "kind": "SCALAR"
+                  "name": "DisplayType",
+                  "kind": "ENUM"
                 },
                 "name": null,
                 "kind": "NON_NULL"
@@ -502,8 +502,8 @@
               "type": {
                 "ofType": {
                   "ofType": null,
-                  "name": "String",
-                  "kind": "SCALAR"
+                  "name": "DisplayType",
+                  "kind": "ENUM"
                 },
                 "name": null,
                 "kind": "NON_NULL"
@@ -543,6 +543,35 @@
           ],
           "fields": null,
           "enumValues": null,
+          "description": null
+        },
+        {
+          "possibleTypes": null,
+          "name": "DisplayType",
+          "kind": "ENUM",
+          "interfaces": null,
+          "inputFields": null,
+          "fields": null,
+          "enumValues": [
+            {
+              "name": "PRIVATE",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null
+            },
+            {
+              "name": "PUBLIC",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null
+            },
+            {
+              "name": "UNLISTED",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null
+            }
+          ],
           "description": null
         },
         {

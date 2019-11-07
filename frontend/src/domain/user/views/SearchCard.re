@@ -24,9 +24,13 @@ let searchCardCardPickerAreaSingleCard = [%bs.raw {| css(tw`
 
 let searchCardSearchArea = [%bs.raw {| css(tw`
   w-full
-  bg-green
   flex
 `)|}];
+
+let searchCardSearchInputClass = [%bs.raw {| css(tw`
+  m-2
+`)|}];
+
 
 [@react.component]
 let make = (~cardIds, ~normalized, ~index, ~onCardClick) => {
@@ -52,7 +56,7 @@ let make = (~cardIds, ~normalized, ~index, ~onCardClick) => {
     <div className=searchCard>
       <div className=searchCardSearchArea>
         <TextInput
-          // className=inputClass
+          className=searchCardSearchInputClass
           placeholder=("Search")
           value={
             switch(query){

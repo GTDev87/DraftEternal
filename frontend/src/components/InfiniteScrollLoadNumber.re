@@ -17,11 +17,9 @@ let infinteScrollLoadNumbersArea = [%bs.raw {| css(tw`
 `)|}];
 
 let infinteScrollLoadNumbersButton = [%bs.raw {| css(tw`
-  w-full
-  flex
-  justify-center
-  items-center
+  m-2
 `)|}];
+
 
 [@react.component]
 let make = (~className: string, ~loader: React.element, ~children: list(React.element)) => {
@@ -45,8 +43,8 @@ let make = (~className: string, ~loader: React.element, ~children: list(React.el
       }
       {
         numItemsState < Belt.List.length(children) ?
-          <Button onClick=((_) => dispatch(AddItems(addedItems)))>
-            {ReasonReact.string("Add more")}
+          <Button className=infinteScrollLoadNumbersButton onClick=((_) => dispatch(AddItems(addedItems)))>
+            {ReasonReact.string("more...")}
           </Button> :
           <div/>
       }

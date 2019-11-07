@@ -33,6 +33,10 @@ let dashboardContentAreaSelection = [%bs.raw {| css(tw`
   bg-teal-light
 `)|}];
 
+let dashboardLayoutModalClass = [%bs.raw {| css(tw`
+  bg-teal
+`)|}];
+
 
 [@react.component]
 let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
@@ -57,91 +61,21 @@ let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr, ~index
 
       <div className=dashboardLayout>
         {
-          <>
-          </>;
-          /*
-            <ReactModal
-              autoFocus=false
-              isOpen={user.local.tab === CreateCube}
-              onRequestClose={() => updateUser(User.Action.LocalAction(ChangeTab(Library)))}
-            >
-              {
-                switch (user.local.tab) {
-                | CreateCube =>
-                  <div/>
-                  // let newClassroom =
-                  //   normalized
-                  //   |> MyNormalizr.Converter.Cube.Remote.getRecord(_, user.local.newCubeId)
-                  //   |> Belt.Option.getWithDefault(_, Cube.Model.Record.defaultWithId((), user.local.newCubeId));
-        
-                  // <Cube.Mutation.CreateCube>
-                  //   ...((createCube) =>
-                  //       <NewClassroomModalContents
-                  //         newClassroom
-                  //         addNewClassroom={
-                  //           () =>
-                  //             updateTeacher(
-                  //               Teacher.Action.(
-                  //                 CombineReducer(
-                  //                   /* AddClassroom, */
-                  //                   ApolloAddClassroom(() => addClassroom(
-                  //                     ~id=newClassroom.data.id,
-                  //                     ~name=newClassroom.data.name,
-                  //                     ~teacherId=teacherId |> Teacher.Model.getUUIDFromId,
-                  //                     (),
-                  //                   )),
-                  //                   CombineReducer(
-                  //                     OpenModal(None),
-                  //                     SelectSideBar(
-                  //                       SideTab.Classroom,
-                  //                       teacher.local.newClassroomId
-                  //                       |> Classroom.Model.getUUIDFromId,
-                  //                     ),
-                  //                   ),
-                  //                 )
-                  //               ),
-                  //             )
-                  //         }
-                  //         updateNewClassroom
-                  //         normalized
-                  //       />
-                  //   )
-                  // </Cube.Mutation.CreateCube>;
 
-                        <NewClassroomModalContents
-                          newClassroom
-                          addNewClassroom={
-                            () =>
-                              updateTeacher(
-                                Teacher.Action.(
-                                  CombineReducer(
-                                    /* AddClassroom, */
-                                    ApolloAddClassroom(() => addClassroom(
-                                      ~id=newClassroom.data.id,
-                                      ~name=newClassroom.data.name,
-                                      ~teacherId=teacherId |> Teacher.Model.getUUIDFromId,
-                                      (),
-                                    )),
-                                    CombineReducer(
-                                      OpenModal(None),
-                                      SelectSideBar(
-                                        SideTab.Classroom,
-                                        teacher.local.newClassroomId
-                                        |> Classroom.Model.getUUIDFromId,
-                                      ),
-                                    ),
-                                  )
-                                ),
-                              )
-                          }
-                          updateNewClassroom
-                          normalized
-                        />
-                | _ => <div/>
-                }
+          <ReactModal
+            autoFocus=false
+            isOpen={user.local.modal !== None}
+            className=dashboardLayoutModalClass
+            onRequestClose={() => updateUser(User.Action.LocalAction(CloseModal))}
+          >
+            {
+              /* REMEMBER RESET ID IN LOCAL */
+              switch (user.local.modal) {
+              | Some(SaveCube) => <SaveCubeContentModal user updateUser />
+              | None => <> </>
               }
-            </ReactModal>
-          */
+            }
+          </ReactModal>
         }
         <div className=dashboardLayoutMastHead>
           <MastHead user />
