@@ -56,7 +56,7 @@ defmodule ProviderApi.Mixfile do
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~> 4.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:postgrex, "~> 0.14.3"},
+      {:postgrex, "~> 0.15.1"},
       {:gettext, "~> 0.13.1"},
       {:cors_plug, "~> 1.3"},
       {:excoveralls, "~> 0.7.2", only: :test},
@@ -67,7 +67,8 @@ defmodule ProviderApi.Mixfile do
       {:ueberauth_google, "~> 0.7"},
       {:ja_serializer, "~> 0.12.0"},
       {:guardian, "~> 1.2.1"},
-      {:database_url, "~> 0.1"}
+      {:database_url, "~> 0.1"},
+      {:httpoison, "~> 1.6"}
     ]
   end
 

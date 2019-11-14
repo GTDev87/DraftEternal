@@ -5,6 +5,7 @@ defmodule DraftEternalApi.Web.Model.User do
   @validated_fields [:id, :email]
 
   @primary_key {:id, :binary_id, autogenerate: false}
+  @foreign_key_type Ecto.UUID
   schema @model do
     # field :id, Ecto.UUID
     field(:email, :string)

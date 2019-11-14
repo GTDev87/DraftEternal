@@ -9,15 +9,18 @@ defmodule DraftEternalApi do
     # Define workers and child supervisors to be supervised
     children = [
       # Start the Ecto repository
+      DraftEternalApi.Commanded.Application,
       DraftEternalApi.Web.Repo,
       DraftEternalApi.Web.WriteRepo,
       # Start the endpoint when the application starts
       DraftEternalApi.Web.Endpoint,
       {Absinthe.Subscription, [DraftEternalApi.Web.Endpoint]},
+      # DraftEternalApi.EventStore,
       # worker(DraftEternalApi.Web.Schema.Domain.User.Events.UserCreated.Projection, [], id: :user_aggregate_projector),
       # Start your own worker by calling: DraftEternalApi.Web.Worker.start_link(arg1, arg2, arg3)
       # worker(DraftEternalApi.Web.Worker, [arg1, arg2, arg3]),
-      supervisor(DraftEternalApi.Web.Schema.Domain.User.Supervisor, []),
+      DraftEternalApi.Web.Schema.Domain.User.Supervisor,
+      DraftEternalApi.Web.Schema.Domain.Cube.Supervisor,
       worker(DraftEternalApi.Web.Lib.KeyValue, []),
     ]
 

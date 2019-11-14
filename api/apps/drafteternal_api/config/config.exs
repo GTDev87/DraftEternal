@@ -7,7 +7,17 @@ use Mix.Config
 
 # General application configuration
 config :drafteternal_api,
-  ecto_repos: [DraftEternalApi.Web.Repo, DraftEternalApi.Web.WriteRepo]
+  ecto_repos: [DraftEternalApi.Web.Repo, DraftEternalApi.Web.WriteRepo],
+  event_stores: [DraftEternalApi.EventStore]
+
+config :drafteternal_api, DraftEternalApi.Commanded.Application,
+  event_store: [
+    adapter: Commanded.EventStore.Adapters.EventStore,
+    event_store: DraftEternalApi.EventStore
+  ],
+  pub_sub: :local,
+  registry: :local
+
 
 
 config :commanded,

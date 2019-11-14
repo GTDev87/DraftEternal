@@ -16,7 +16,7 @@ module MutationInternals = {
     ~name: string,
     ~description: string,
     ~display: DisplayType.t,
-    ~creatorId: User.Model.idType,
+    ~creatorId: User_Model.idType,
     ~cardIds: list(Card.Model.idType)
   ) => Js.Promise.t(ReasonApolloHooks.Mutation.controlledVariantResult(Config.t));
 

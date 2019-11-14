@@ -14,10 +14,23 @@ let _defaultData = (id) => {
     id: id,
     email: "",
     cubeIds: [],
-    guest: true,
+    guest: false,
   }
   /* UI */
 };
+
+let guestDataId = (id): _record => {
+  data: {
+    id: id,
+    email: "",
+    cubeIds: [],
+    guest: true,
+  },
+  local: User_Local.Model.Record.default(id),
+};
+
+let guestData = () => guestDataId(UUID.generateUUID())
+
 
 let _defaultRecordId = (id): _record => {
   data: _defaultData(id),

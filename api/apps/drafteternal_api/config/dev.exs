@@ -60,7 +60,7 @@ hostname_commanded = System.get_env("DB_COMMANDED_HOSTNAME_DEV") || "localhost"
 url_commanded = System.get_env("DRAFTETERNAL_COMMANDED_DB_URL") || "ecto://#{username_commanded}:#{password_commanded}@#{hostname_commanded}/#{database_commanded}"
 ssl_commanded = !!System.get_env("DRAFTETERNAL_COMMANDED_DB_URL")
 
-config :eventstore, EventStore.Storage,
+config :drafteternal_api, DraftEternalApi.EventStore,
   serializer: Commanded.Serialization.JsonSerializer,
   url: url_commanded,
   ssl: ssl_commanded,

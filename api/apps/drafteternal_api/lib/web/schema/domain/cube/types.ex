@@ -4,8 +4,8 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Types do
   use DraftEternalApi.Web.Lib.AbsintheInputUtils
 
   typed_enum DisplayType do
-    value(:private, 0)
-    value(:public, 1)
-    value(:unlisted, 2)
+    value(:private, "private")
+    value(:public, "public")
+    value(:unlisted, "unlisted")
   end
 end

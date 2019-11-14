@@ -79,13 +79,21 @@ let make = (~user: User.Model.Record.t, ~normalized, ~updateUser, ~afterSave=?) 
           ...{(giveTestToClassroomMutation) =>
             <Button
               onClick=((_) => {
-                giveTestToClassroomMutation(
-                  ~id=user.local.builderCube.data.id,
-                  ~name=user.local.builderCube.data.name,
-                  ~description=user.local.builderCube.data.description,
-                  ~display=user.local.builderCube.data.display,
-                  ~creatorId=user.local.builderCube.data.creatorId,
-                  ~cardIds=user.local.builderCube.data.cardIds,
+                let apollo = () => 
+                  giveTestToClassroomMutation(
+                    ~id=user.local.builderCube.data.id,
+                    ~name=user.local.builderCube.data.name,
+                    ~description=user.local.builderCube.data.description,
+                    ~display=user.local.builderCube.data.display,
+                    ~creatorId=user.local.builderCube.data.creatorId,
+                    ~cardIds=user.local.builderCube.data.cardIds,
+                  )
+
+                updateUser(
+                  CombineReducer(
+                    ApolloCreateCubeMutationWithAction(apollo, LocalAction(CloseModal)),
+                    Belt.Option.getWithDefault(afterSave, User.Action.Nothing)
+                  )
                 )
               })
             >

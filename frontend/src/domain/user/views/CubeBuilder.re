@@ -41,7 +41,7 @@ let cubeBuilderCardSearchAreaText = [%bs.raw {| css(tw`
 `)|}];
 
 [@react.component]
-let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
+let make = (~user: User.Model.Record.t, ~guest, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
   let updateUser = action => {
     MyNormalizr.Converter.User.Remote.updateWithDefault(
       (),
@@ -51,19 +51,21 @@ let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr,
     )
     |> updateNormalizr;
   };
-  
-  <div className=cubeBuilder>
-    <div className=cubeBuilderCardPickerArea>
-      <SearchCard
-        selectedCardIds=user.local.builderCube.data.cardIds
-        cardIds
-        normalized
-        index
-        onCardClick={(cId) => User.Action.LocalAction(UpdateBuilderCube(AddCard(cId))) |> updateUser |> ignore}
-      />
+
+  guest ?
+    <GoogleLoginButton /> :
+    <div className=cubeBuilder>
+      <div className=cubeBuilderCardPickerArea>
+        <SearchCard
+          selectedCardIds=user.local.builderCube.data.cardIds
+          cardIds
+          normalized
+          index
+          onCardClick={(cId) => User.Action.LocalAction(UpdateBuilderCube(AddCard(cId))) |> updateUser |> ignore}
+        />
+      </div>
+      <div className=cubeBuilderCardSelectionArea>
+        <CardSelectionArea user normalized updateUser />
+      </div>
     </div>
-    <div className=cubeBuilderCardSelectionArea>
-      <CardSelectionArea user normalized updateUser />
-    </div>
-  </div>
 };

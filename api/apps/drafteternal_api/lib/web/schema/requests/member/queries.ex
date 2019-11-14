@@ -8,6 +8,9 @@ defmodule DraftEternalApi.Web.Schema.Member.Queries do
 
   
   def get_member(_args, info) do
-    {:ok, info.context.current_user.id}
+    case Map.get(info.context, :current_user) do
+      nil -> {:error, "No current user"}
+      current_user -> {:ok, current_user.id}
+    end
   end
 end

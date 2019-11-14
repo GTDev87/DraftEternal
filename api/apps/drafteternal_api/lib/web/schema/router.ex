@@ -3,7 +3,7 @@ defmodule DraftEternalApi.Web.Schema.Router do
 
   alias DraftEternalApi.Web.Schema.Domain.User
   
-  identify User.Aggregate, by: :id, prefix: "user-"
+  identify User.Aggregate, by: :id
 
   dispatch [
       User.Mutations.CreateUser.Command,
@@ -12,7 +12,7 @@ defmodule DraftEternalApi.Web.Schema.Router do
 
   alias DraftEternalApi.Web.Schema.Domain.Cube
 
-  identify Cube.Aggregate, by: :id, prefix: "cube-"
+  identify Cube.Aggregate, by: :id
 
   dispatch [
       Cube.Mutations.CreateCube.Command,

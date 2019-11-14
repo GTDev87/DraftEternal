@@ -41,11 +41,12 @@ defmodule DraftEternalApi.Mixfile do
       {:phoenix, "~> 1.4.0"},
       {:phoenix_pubsub, "~> 1.1"},
       {:phoenix_ecto, "~>4.0"},
-      {:postgrex, "~> 0.14.3"},
+      {:postgrex, "~> 0.15.1"},
       {:phoenix_html, "~> 2.11"},
       {:phoenix_live_reload, "~> 1.2", only: :dev},
       {:gettext, "~> 0.13.1"},
       {:absinthe, "~> 1.4.14"},
+      {:absinthe_phoenix, "~> 1.4.4"},
       {:absinthe_plug, "~> 1.4"},
       {:poison, "~> 3.0"},
       {:plug, "~> 1.7.1"},
@@ -54,7 +55,7 @@ defmodule DraftEternalApi.Mixfile do
       {:cors_plug, "~> 1.3"},
       {:faker, "~> 0.8"},
       {:guardian, "~> 1.2.1"},
-      {:eventstore, "~> 0.17"},
+      {:eventstore, "~> 1.0.0-rc.0"},
       {:elixir_uuid, "~> 1.2"},
       {:dialyxir, "~> 1.0.0-rc.3", only: [:dev], runtime: false},
       {:dataloader, "~> 1.0.6"},
@@ -62,12 +63,13 @@ defmodule DraftEternalApi.Mixfile do
       {:matrix, "~> 0.3.0"},
       {:jason, "~> 1.1"},
       {:database_url, "~> 0.1"},
-      {:commanded, "~> 0.19"},
-      {:commanded_ecto_projections, "~> 0.8"},
-      {:commanded_eventstore_adapter, "~> 0.6"},
+      {:commanded, "~> 1.0.0-rc.1"},
+      {:commanded_ecto_projections, "~> 1.0.0-rc.0"},
+      {:commanded_eventstore_adapter, "~> 1.0.0-rc.0"},
       {:castore, "~> 0.1.0"},
       {:mint, "~> 0.4.0"},
-      {:exconstructor, "~> 1.1"}
+      {:exconstructor, "~> 1.1"},
+      {:httpoison, "~> 1.6"}
     ]
   end
 
@@ -79,7 +81,12 @@ defmodule DraftEternalApi.Mixfile do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
+      "event_store.init": ["event_store.drop", "event_store.create", "event_store.init"],
+      "ecto.init": ["ecto.drop", "ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       # "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
+      reset: ["event_store.init", "ecto.init"],
+
+
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]
     ]

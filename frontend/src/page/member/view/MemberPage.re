@@ -15,9 +15,9 @@ let make = () =>
         |> Belt.List.map(_, Card.Model.objectToId);
       <Member.Container
         errorComponent={
-          let guest = User.Model.Record.default();
+          let guest = User_Record.guestData();
 
-          <NormalizerInit records=[User.Record.Record(guest)]>
+          <NormalizerInit records=[]>
             ...{(~normalized, ~updateNormalizr) => {
               
               React.useEffect1(() => {
@@ -27,10 +27,8 @@ let make = () =>
                 |> Belt.List.map(_, (card: Card.Model.Record.t) => FlexSearch.addValue(index, card.data.id, card.data.name ++ " " ++ card.data.cardText));
                 None; /* May need a cleanup function */
               }, [||]);
-
               
-              
-              <DashboardLayout id={User.Model.idToTypedId(guest.data.id)} normalized updateNormalizr cardIds index/>
+              <DashboardLayout guest=true id={User.Model.idToTypedId(guest.data.id)} normalized updateNormalizr cardIds index/>
             }}
           </NormalizerInit>
         }>
@@ -47,7 +45,7 @@ let make = () =>
                     None; /* May need a cleanup function */
                   }, [||]);
 
-                  <DashboardLayout id={User.Model.idToTypedId(user.data.id)} normalized updateNormalizr cardIds index/>
+                  <DashboardLayout guest=false id={User.Model.idToTypedId(user.data.id)} normalized updateNormalizr cardIds index/>
                 }}
               </NormalizerInit>
             }

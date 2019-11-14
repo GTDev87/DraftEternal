@@ -5,6 +5,7 @@ defmodule DraftEternalApi.Web.Model.Cube do
   @validated_fields [:id, :name, :description, :creator_id]
 
   @primary_key {:id, :binary_id, autogenerate: false}
+  @foreign_key_type Ecto.UUID
   schema @model do
     # field :id, Ecto.UUID
     field(:name, :string)

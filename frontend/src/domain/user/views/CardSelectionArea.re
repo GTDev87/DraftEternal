@@ -17,6 +17,7 @@ let cardSelectionAreaStats = [%bs.raw {| css(tw`
 let cardSelectionAreaStatsTitle = [%bs.raw {| css(tw`
   text-3xl
   text-white
+  whitespace-no-wrap
 `)|}];
 
 let cardSelectionAreaStatsStats = [%bs.raw {| css(tw`

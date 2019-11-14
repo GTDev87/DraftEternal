@@ -3,8 +3,8 @@ defmodule DraftEternalApi.Web.Schema.Domain.User.Supervisor do
 
   alias DraftEternalApi.Web.Schema.Domain.User.Projector
   
-  def start_link do
-    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(arg) do
+    Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
   def init(_arg) do

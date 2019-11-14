@@ -39,55 +39,53 @@ let dashboardLayoutModalClass = [%bs.raw {| css(tw`
 
 
 [@react.component]
-let make = (~id: Schema.User.id, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
-
-  // let (user.local.tab, dispatch) = SideTab.tabReducer();
+let make = (~id: Schema.User.id, ~guest, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
 
   let optionUser =
     MyNormalizr.Converter.User.Remote.getRecord(normalized, id);
 
-  switch(MyNormalizr.Converter.User.Remote.getRecord(normalized, id)){
-  | None => <div/>
-  | Some(user) => {
-      let updateUser = action => {
-        MyNormalizr.Converter.User.Remote.updateWithDefault(
-          (),
-          normalized |> Js.Promise.resolve,
-          User.Model.idToTypedId(user.data.id),
-          action,
-        )
-        |> updateNormalizr;
-      };
+  let user = 
+    Belt.Option.getWithDefault(optionUser,
+      User_Record.guestDataId(User.Model.getUUIDFromId(id)));
+  
+  let updateUser = action => {
+    MyNormalizr.Converter.User.Remote.updateWithDefault(
+      (),
+      normalized |> Js.Promise.resolve,
+      User.Model.idToTypedId(user.data.id),
+      action,
+    )
+    |> updateNormalizr;
+  };
 
-      <div className=dashboardLayout>
+  <div className=dashboardLayout>
+    {
+      <ReactModal
+        autoFocus=false
+        isOpen={user.local.modal !== None}
+        className=dashboardLayoutModalClass
+        onRequestClose={() => updateUser(User.Action.LocalAction(CloseModal))}
+      >
         {
-          <ReactModal
-            autoFocus=false
-            isOpen={user.local.modal !== None}
-            className=dashboardLayoutModalClass
-            onRequestClose={() => updateUser(User.Action.LocalAction(CloseModal))}
-          >
-            {
-              /* REMEMBER RESET ID IN LOCAL */
-              switch (user.local.modal) {
-              | Some(SaveCube) => <SaveCubeContentModal user updateUser normalized />
-              | None => <> </>
-              }
-            }
-          </ReactModal>
+          /* REMEMBER RESET ID IN LOCAL */
+          switch (user.local.modal) {
+          | Some(SaveCube) =>
+              <SaveCubeContentModal user updateUser normalized  />
+          | None => <> </>
+          }
         }
-        <div className=dashboardLayoutMastHead>
-          <MastHead user />
-        </div>
-        <div className=dashboardContentArea>
-          <div className=dashboardContentAreaSideBar>
-            <SideBar user chooseTab={(t) => updateUser(User.Action.LocalAction(ChangeTab(t)))} normalized/>
-          </div>
-          <div className=dashboardContentAreaSelection>
-            <ContentArea user cardIds normalized updateNormalizr index />
-          </div>
-        </div>
-      </div>
+      </ReactModal>
     }
-  }  
+    <div className=dashboardLayoutMastHead>
+      <MastHead user />
+    </div>
+    <div className=dashboardContentArea>
+      <div className=dashboardContentAreaSideBar>
+        <SideBar user chooseTab={(t) => updateUser(User.Action.LocalAction(ChangeTab(t)))} normalized/>
+      </div>
+      <div className=dashboardContentAreaSelection>
+        <ContentArea user guest cardIds normalized updateNormalizr index />
+      </div>
+    </div>
+  </div>;
 };

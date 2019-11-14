@@ -24,7 +24,7 @@ defmodule DraftEternalApi.Web.Schema.Domain.User.Mutations.CreateUser.GraphQL do
     args
     |> CreateUser.Command.new()
     |> CreateUser.Command.update(args.user)
-    |> DraftEternalApi.Web.Schema.Router.dispatch(include_aggregate_version: true, consistency: :strong)
+    |> DraftEternalApi.Commanded.Application.dispatch(include_aggregate_version: true, consistency: :strong)
     |> case do
       {:ok, version} -> {:ok, uuid}
       :ok -> {:ok, uuid}

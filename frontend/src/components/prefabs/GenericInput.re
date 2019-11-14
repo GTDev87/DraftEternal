@@ -53,7 +53,7 @@ let make =
         | UpdateInternal(internalValue) => ReactUpdate.UpdateWithSideEffects(
             {...state, internalValue},
             (_) => {
-              Handlers.onTextChange(() => { onTextChange(state.internalValue) |> ignore })
+              Handlers.onTextChange(() => { onTextChange(internalValue) |> ignore })
               |> ignore;
               None;
             }
@@ -63,7 +63,6 @@ let make =
 
   React.useEffect1(() => {
     /* Once */
-    Js.log("once");
     switch (state.contentRef^) {
     | Some(field) => setElementContents(field, isTextArea)
     | _ => ()

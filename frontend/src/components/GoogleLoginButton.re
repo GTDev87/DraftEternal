@@ -15,7 +15,7 @@ let aStyle = style =>
     ),
   );
 
-  [@react.component]
+[@react.component]
 let make = (~style=?) => {
   <a
     style={aStyle(style)}

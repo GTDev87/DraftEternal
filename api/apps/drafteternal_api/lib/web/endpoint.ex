@@ -1,6 +1,8 @@
 defmodule DraftEternalApi.Web.Endpoint do
   use Phoenix.Endpoint, otp_app: :drafteternal_api
 
+  use Absinthe.Phoenix.Endpoint
+
   socket "/socket", DraftEternalApi.Web.UserSocket, 
     websocket: true, # or list of options
     longpoll: false

@@ -36,7 +36,7 @@ mix ecto.create
 
 # exit
 
-mix do event_store.create, event_store.init # need to add to remote setup
+mix do event_store.create, event_store.init -e DraftEternalApi.EventStore  # need to add to remote setup
 mix ecto.migrate --all
 mix run apps/drafteternal_api/priv/repo/seeds.exs
 ```
@@ -53,6 +53,12 @@ yarn install
 yarn local-introspection
 yarn start
 
+```
+
+# delete event store
+
+```
+mix event_store.drop -e DraftEternalApi.EventStore
 ```
 
 # For Prod... ugh

@@ -7,16 +7,16 @@ let contentArea = [%bs.raw {| css(tw`
 `)|}];
 
 [@react.component]
-let make = (~user: User.Model.Record.t, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
+let make = (~user: User.Model.Record.t, ~guest, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
   <div className=contentArea>
     {
       switch(user.local.tab) {
       | SideTab.Library => <div/>
       | SideTab.SearchCard => <SearchCard cardIds normalized index onCardClick={_ => ()} />
       | SideTab.CreateCube =>
-          <CubeBuilder user cardIds normalized updateNormalizr index />
+          <CubeBuilder user guest cardIds normalized updateNormalizr index />
       | SideTab.MyCube(id) =>
-          <CubeBuilder user cardIds normalized updateNormalizr index />
+          <CubeBuilder user guest cardIds normalized updateNormalizr index />
       }
     }
   </div>
