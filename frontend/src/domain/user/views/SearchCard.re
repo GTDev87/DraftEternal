@@ -22,6 +22,10 @@ let searchCardCardPickerAreaSingleCard = [%bs.raw {| css(tw`
   cursor-pointer
 `)|}];
 
+let searchCardCardPickerAreaSingleCardWoPointer = [%bs.raw {| css(tw`
+  w-1/6
+`)|}];
+
 let searchCardCardPickerAreaSingleCardSelected = [%bs.raw {| css(tw`
   opacity-25
   cursor-not-allowed
@@ -38,7 +42,9 @@ let searchCardSearchInputClass = [%bs.raw {| css(tw`
 
 
 [@react.component]
-let make = (~cardIds, ~normalized, ~index, ~onCardClick, ~selectedCardIds=?) => {
+let make = (~cardIds, ~normalized, ~index, ~onCardClick=?, ~selectedCardIds=?) => {
+  let onCardClickVal = Belt.Option.getWithDefault(onCardClick, (_ => ()));
+  
   let (query, dispatch) =
     React.useReducer(
       (_, action) =>
@@ -48,54 +54,68 @@ let make = (~cardIds, ~normalized, ~index, ~onCardClick, ~selectedCardIds=?) => 
       None
     );
 
-  let updatedCardIds =
+  let updatedCardIds: list(Card.Model.idType) =
     switch(query) {
     | None => cardIds
-    | Some(query) =>
+    | Some(query) => {
+      let allCardIdsSet =
+        cardIds
+        |> Belt.List.map(_, Card.Model.getUUIDFromId)
+        |> Belt.List.toArray
+        |> Belt_SetString.fromArray;
+
+      let searchCardIdsSet =
         index
         |> FlexSearch.search(_, query)
-        |> Belt.List.fromArray
-        |> Belt.List.map(_, Card.Model.idToTypedId)
-    };
-  
-    <div className=searchCard>
-      <div className=searchCardSearchArea>
-        <TextInput
-          className=searchCardSearchInputClass
-          placeholder=("Search")
-          value={
-            switch(query){
-            | None => ""
-            | Some(text) => text
-            }
-          }
-          onTextChange={(t) => {
-            dispatch(UpdateQuery(t));
-            () |> Js.Promise.resolve; 
-          }}
-          autoFocus=false
-        />
-      </div>
+        |> Belt_SetString.fromArray;
       
-      <InfiniteScrollLoadNumber
-        className=searchCardScrollArea
-        loader={<div>{ReasonReact.string("LOADING...")}</div>}
-      >
-        {
-          Belt.List.map(updatedCardIds, (cId: Card.Model.idType) => {
-            let selected =
-              Belt.Option.mapWithDefault(selectedCardIds, false, (selectedCardIds) => {
-                Belt.List.has(selectedCardIds, cId, (a, b) => a == b);
-              });
-            <div
-              key=(Card.Model.getUUIDFromId(cId))
-              className=cx(searchCardCardPickerAreaSingleCard, selected ? searchCardCardPickerAreaSingleCardSelected : "")
-              onClick={(_) => onCardClick(cId)}
-            >
-              <CardFullLayout id=cId normalized />
-            </div>
-          })
+      let stringList =
+        allCardIdsSet
+        |> Belt_SetString.intersect(_, searchCardIdsSet)
+        |> Belt_SetString.toList;
+
+      Belt.List.map(stringList, Card.Model.idToTypedId);
+    }
+  };
+
+  <div className=searchCard>
+    <div className=searchCardSearchArea>
+      <TextInput
+        className=searchCardSearchInputClass
+        placeholder=("Search")
+        value={
+          switch(query){
+          | None => ""
+          | Some(text) => text
+          }
         }
-      </InfiniteScrollLoadNumber>
+        onTextChange={(t) => {
+          dispatch(UpdateQuery(t));
+          () |> Js.Promise.resolve; 
+        }}
+        autoFocus=true
+      />
+    </div>
+    
+    <InfiniteScrollLoadNumber
+      className=searchCardScrollArea
+      loader={<div>{ReasonReact.string("LOADING...")}</div>}
+    >
+      {
+        Belt.List.map(updatedCardIds, (cId: Card.Model.idType) => {
+          let selected =
+            Belt.Option.mapWithDefault(selectedCardIds, false, (selectedCardIds) => {
+              Belt.List.has(selectedCardIds, cId, (a, b) => a == b);
+            });
+          <div
+            key=(Card.Model.getUUIDFromId(cId))
+            className=cx((onCardClick != None ? searchCardCardPickerAreaSingleCard: searchCardCardPickerAreaSingleCardWoPointer), selected ? searchCardCardPickerAreaSingleCardSelected : "")
+            onClick={(_) => onCardClickVal(cId)}
+          >
+            <CardFullLayout id=cId normalized />
+          </div>
+        })
+      }
+    </InfiniteScrollLoadNumber>
   </div>
 };

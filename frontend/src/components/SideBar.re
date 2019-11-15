@@ -23,23 +23,16 @@ let toString = (sideTabType : SideTab.t, normalized) : string =>
   | SideTab.Library => "Cube Library"
   | SideTab.SearchCard => "Search Card"
   | SideTab.CreateCube => "+ Create Cube"
-  | SideTab.MyCube(id) => {
-      let optionCube =
-        MyNormalizr.Converter.Cube.Remote.getRecord(normalized, id);
-
-      switch(optionCube) {
-      | None => ""
-      | Some(cube) => cube.data.name
-      }
-    }
+  | SideTab.CubeManager => "Cube Manager"
+  | SideTab.Cube(id) => ""
   };
 
 
 [@react.component]
-let make = (~user: User.Model.Record.t, ~chooseTab, ~normalized) => {
+let make = (~user: User.Model.Record.t, ~chooseTab, ~normalized, ~guest) => {
   <div className=sideBar>
     {
-      SideTab.all(user.data.cubeIds)
+      SideTab.all(guest)
       |> Belt.List.map(_, (t) => {
           let text = toString(t, normalized);
           <div

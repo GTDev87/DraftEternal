@@ -18,7 +18,7 @@ let buttonStyle = [%bs.raw {| css(tw`
 `)|}];
 
 [@react.component]
-let make = (~onClick=?, ~className=?, ~autoFocus=?, ~style=?, ~disabled=?, ~children) => {
+let make = (~onClick=?, ~className=?, ~innerClassName=?, ~autoFocus=?, ~style=?, ~disabled=?, ~children) => {
   <div className={cx(buttonOuterStyle, Belt.Option.getWithDefault(className, ""))}>
     {
       ReasonReact.createDomElement(
@@ -26,7 +26,7 @@ let make = (~onClick=?, ~className=?, ~autoFocus=?, ~style=?, ~disabled=?, ~chil
         ~props={
           "autoFocus": Belt.Option.getWithDefault(autoFocus, true),
           "onClick": onClick,
-          "className": buttonStyle,
+          "className": cx(buttonStyle, Belt.Option.getWithDefault(innerClassName, "")),
           "disabled": Js.Nullable.fromOption(disabled)
         },
         [|children|],

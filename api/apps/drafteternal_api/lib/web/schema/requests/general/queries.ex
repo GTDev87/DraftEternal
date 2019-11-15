@@ -6,11 +6,22 @@ defmodule DraftEternalApi.Web.Schema.General.Queries do
     field(:cards, non_null(list_of(non_null(:card))), resolve: &get_cards/2)
   end
 
-  def get_cards(args, _info) do
-    url = "https://eternalwarcry.com/content/cards/eternal-cards.json"
+  def get_json(filename) do
+    filename
+    |> File.read!
+    |> Poison.decode!
+  end
 
-    response = HTTPoison.get!(url)
-    all_cards = Poison.decode!(response.body)
+  def get_cards(args, _info) do
+    all_cards =
+      try do
+        url = "https://eternalwarcry.com/content/cards/eternal-cards.json"
+        response = HTTPoison.get!(url)
+        Poison.decode!(response.body)
+      rescue
+        _ ->
+          get_json("./all_cards.json")
+      end
 
     non_nil_cards =
       all_cards

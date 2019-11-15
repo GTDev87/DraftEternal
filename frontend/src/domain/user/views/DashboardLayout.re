@@ -81,7 +81,7 @@ let make = (~id: Schema.User.id, ~guest, ~cardIds, ~normalized, ~updateNormalizr
     </div>
     <div className=dashboardContentArea>
       <div className=dashboardContentAreaSideBar>
-        <SideBar user chooseTab={(t) => updateUser(User.Action.LocalAction(ChangeTab(t)))} normalized/>
+        <SideBar user guest chooseTab={(t) => updateUser(User.Action.LocalAction(ChangeTab(t)))} normalized/>
       </div>
       <div className=dashboardContentAreaSelection>
         <ContentArea user guest cardIds normalized updateNormalizr index />

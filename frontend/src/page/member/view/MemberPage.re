@@ -7,8 +7,6 @@ let make = () =>
 
   <CardContainer query={Query.Card.M.make()} errorComponent={<div />} >
     ...{(~response) => {
-      
-
       let cardIds =
         response##cards
         |> Belt.List.fromArray

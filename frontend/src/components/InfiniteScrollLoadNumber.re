@@ -43,7 +43,7 @@ let make = (~className: string, ~loader: React.element, ~children: list(React.el
       }
       {
         numItemsState < Belt.List.length(children) ?
-          <Button className=infinteScrollLoadNumbersButton onClick=((_) => dispatch(AddItems(addedItems)))>
+          <Button autoFocus=false className=infinteScrollLoadNumbersButton onClick=((_) => dispatch(AddItems(addedItems)))>
             {ReasonReact.string("more...")}
           </Button> :
           <div/>

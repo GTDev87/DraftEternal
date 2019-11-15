@@ -2,26 +2,31 @@ type t =
   | Library
   | CreateCube
   | SearchCard
-  | MyCube(Schema.Cube.id);
+  | CubeManager
+  | Cube(Cube_Model.idType)
+;
 
 type action =
   | ToLibrary
   | ToCreateCube
   | ToSearchCard
-  | ToMyCube(Schema.Cube.id);
+  | ToCubeManager
+  | ToCube(Cube_Model.idType)
+;
 
-let all = (myCubeIds) => ([
+let all = (guest) => ([
   SearchCard,
   Library,
   CreateCube,
-] @ Belt.List.map(myCubeIds, (c: Schema.Cube.id) => MyCube(c)));
+] @ (guest ? [] : [CubeManager]));
 
 let toIcon = (sideTabType : t) =>
   switch(sideTabType){
   | Library => <CubeIcon />
   | CreateCube => <CubeIcon />
   | SearchCard => <CubeIcon />
-  | MyCube(_) => <CubeIcon />
+  | CubeManager => <CubeIcon />
+  | CubeManager => <div />
   };
 
 let toAction = (sideTabType : t): action =>
@@ -29,7 +34,8 @@ let toAction = (sideTabType : t): action =>
   | Library => ToLibrary
   | CreateCube => ToCreateCube
   | SearchCard => ToSearchCard
-  | MyCube(id) => ToMyCube(id)
+  | CubeManager => ToCubeManager
+  | Cube(id) => ToCube(id)
   };
 
 let tabReducer = (): (t, (action) => unit) =>
@@ -39,7 +45,8 @@ let tabReducer = (): (t, (action) => unit) =>
       | ToLibrary => Library
       | ToCreateCube => CreateCube
       | ToSearchCard => SearchCard
-      | ToMyCube(id) => MyCube(id)
+      | ToCubeManager => CubeManager
+      | ToCube(id) => Cube(id)
       },
       Library,
   );
