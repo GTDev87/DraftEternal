@@ -687,6 +687,29 @@
                   "defaultValue": null
                 }
               ]
+            },
+            {
+              "type": {
+                "ofType": null,
+                "name": "Cube",
+                "kind": "OBJECT"
+              },
+              "name": "updateCube",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": [
+                {
+                  "type": {
+                    "ofType": null,
+                    "name": "CubeInput",
+                    "kind": "INPUT_OBJECT"
+                  },
+                  "name": "cube",
+                  "description": null,
+                  "defaultValue": null
+                }
+              ]
             }
           ],
           "enumValues": null,
@@ -718,6 +741,30 @@
                 "kind": "NON_NULL"
               },
               "name": "cards",
+              "isDeprecated": false,
+              "description": null,
+              "deprecationReason": null,
+              "args": []
+            },
+            {
+              "type": {
+                "ofType": {
+                  "ofType": {
+                    "ofType": {
+                      "ofType": null,
+                      "name": "Cube",
+                      "kind": "OBJECT"
+                    },
+                    "name": null,
+                    "kind": "NON_NULL"
+                  },
+                  "name": null,
+                  "kind": "LIST"
+                },
+                "name": null,
+                "kind": "NON_NULL"
+              },
+              "name": "cubes",
               "isDeprecated": false,
               "description": null,
               "deprecationReason": null,

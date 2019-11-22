@@ -41,7 +41,9 @@ let cubeBuilderCardSearchAreaText = [%bs.raw {| css(tw`
 `)|}];
 
 [@react.component]
-let make = (~user: User.Model.Record.t, ~guest, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
+let make = (~user: User.Model.Record.t, ~guest, ~cardIds, ~normalized, ~updateNormalizr, ~index, ~update=false) => {
+  Js.log("CubeBuilder update");
+  Js.log(update);
   let updateUser = action => {
     MyNormalizr.Converter.User.Remote.updateWithDefault(
       (),

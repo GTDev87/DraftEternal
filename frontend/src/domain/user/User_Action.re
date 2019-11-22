@@ -3,6 +3,7 @@ type action =
   | Nothing
   | LocalAction(User_Local.Action.action)
   | ApolloCreateCubeMutationWithAction(ApolloType.t(CreateCube.Mutation.t), action)
+  | ApolloUpdateCubeMutationWithAction(ApolloType.t(UpdateCube.Mutation.t), action)
   | CombineReducer(action, action);
 
 type model = User_Model.Record.t;
@@ -23,6 +24,11 @@ let rec reduce = (action, promise: Js.Promise.t(model)): Js.Promise.t(model) =>
           apollo
           |> ApolloType.runApollo
           |> Utils.Promise.runBothIgnoreFirst(_, reduce(action, Js.Promise.resolve(user)))
+       | ApolloUpdateCubeMutationWithAction(apollo, action) =>
+          apollo
+          |> ApolloType.runApollo
+          |> Utils.Promise.runBothIgnoreFirst(_, reduce(action, Js.Promise.resolve(user)))
+        
        | CombineReducer(action1, action2) =>
           ActionUtil.combineActions(reduce, user, action1, action2)
         };

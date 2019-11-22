@@ -69,38 +69,57 @@ let make = (~user: User.Model.Record.t, ~normalized, ~updateUser, ~afterSave=?) 
       <div className=saveCubeContentModalDescriptionArea>
         <TextArea
           className=saveCubeContentModalTitleAreaTextArea
-          value={user.local.builderCube.data.description}
+          value=user.local.builderCube.data.description
           onTextChange={(description) => updateUser(User.Action.LocalAction(UpdateBuilderCube(UpdateDescription(description))))}
           placeholder="Enter Description"
         />
       </div>
       <div className=saveCubeContentModalSaveButtonArea>
-        <Cube_Mutation.CreateCube.ContainerMutation>
-          ...{(giveTestToClassroomMutation) =>
-            <Button
-              onClick=((_) => {
-                let apollo = () => 
-                  giveTestToClassroomMutation(
-                    ~id=user.local.builderCube.data.id,
-                    ~name=user.local.builderCube.data.name,
-                    ~description=user.local.builderCube.data.description,
-                    ~display=user.local.builderCube.data.display,
-                    ~creatorId=user.local.builderCube.data.creatorId,
-                    ~cardIds=user.local.builderCube.data.cardIds,
-                  )
+        <Cube_Mutation.UpdateCube.ContainerMutation>
+          ...{(updateMutation) =>
+            <Cube_Mutation.CreateCube.ContainerMutation>
+              ...{(createMutation) =>
+                <Button
+                  onClick=((_) => {
 
-                updateUser(
-                  CombineReducer(
-                    ApolloCreateCubeMutationWithAction(apollo, LocalAction(CloseModal)),
-                    Belt.Option.getWithDefault(afterSave, User.Action.Nothing)
-                  )
-                )
-              })
-            >
-              {ReasonReact.string("SAVE")}
-            </Button>
+                    Js.log("user.local.update = ");
+                    Js.log(user.local.update);
+                    let action =
+                      user.local.update ?
+                        User_Action.ApolloUpdateCubeMutationWithAction(
+                          () => updateMutation(
+                            ~id=user.local.builderCube.data.id,
+                            ~name=user.local.builderCube.data.name,
+                            ~description=user.local.builderCube.data.description,
+                            ~display=user.local.builderCube.data.display,
+                            ~creatorId=user.local.builderCube.data.creatorId,
+                            ~cardIds=user.local.builderCube.data.cardIds,
+                          ),
+                          LocalAction(CloseModal)
+                        ) :
+                        User_Action.ApolloCreateCubeMutationWithAction(
+                          () => createMutation(
+                            ~id=user.local.builderCube.data.id,
+                            ~name=user.local.builderCube.data.name,
+                            ~description=user.local.builderCube.data.description,
+                            ~display=user.local.builderCube.data.display,
+                            ~creatorId=user.local.builderCube.data.creatorId,
+                            ~cardIds=user.local.builderCube.data.cardIds,
+                          ),
+                          LocalAction(CloseModal)
+                        );
+                    
+                    updateUser(
+                      CombineReducer(action, Belt.Option.getWithDefault(afterSave, User.Action.Nothing))
+                    )
+                  })
+                >
+                  {ReasonReact.string("SAVE")}
+                </Button>
+              }
+            </Cube_Mutation.CreateCube.ContainerMutation>
           }
-        </Cube_Mutation.CreateCube.ContainerMutation>
+        </Cube_Mutation.UpdateCube.ContainerMutation>
       </div>
     </div>
     <div className=saveCubeContentModalDeckView>

@@ -72,6 +72,10 @@ defmodule DraftEternalApi.Web.Lib.EctoTypeUtils do
         @spec upsert(Ecto.Multi.t(), MODEL.t(), MODEL.t(), keyword()) :: Ecto.Multi.t()
         def upsert(multi, struct, params, options \\ []),
           do: DraftEternalApi.Web.Lib.EctoUtils.Multi.upsert_in(MODEL, multi, struct, params, options)
+
+        @spec delete_all(Ecto.Multi.t(), any(), keyword()) :: Ecto.Multi.t()
+        def delete_all(multi, query, options \\ []),
+          do: DraftEternalApi.Web.Lib.EctoUtils.Multi.delete_all_in(MODEL, query, options)
       end
     end
   end

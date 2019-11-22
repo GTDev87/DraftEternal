@@ -6,11 +6,13 @@ let cardSmallLayout = [%bs.raw {| css(tw`
   p-8
   h-full
   w-full
+  flex
+  flex-col
 `)|}];
 
 let cardSmallLayoutIcon = [%bs.raw {| css(tw`
-  h-full
   w-full
+  h-5/6
 `)|}];
 
 let cardSmallLayoutText = [%bs.raw {| css(tw`
@@ -18,6 +20,7 @@ let cardSmallLayoutText = [%bs.raw {| css(tw`
   justify-center
   items-center
   text-xl
+  h-1/6
 `)|}];
 
 [@react.component]

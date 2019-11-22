@@ -5,12 +5,14 @@ defmodule DraftEternalApi.Web.Schema.Domain.User.Mutations.CreateUser.Command do
   ]
 
   use ExConstructor
+  alias DraftEternalApi.Web.Schema.Domain.User.Aggregate
   alias DraftEternalApi.Web.Schema.Domain.User.Mutations.CreateUser.Command
+  alias DraftEternalApi.Web.Schema.Domain.User.Events.UserCreated.Event
 
-  def update(%Command{} = create_post, user) do
-    %Command{create_post |
-      id: user.id,
-      email: user.email
+  def execute(%Aggregate{id: nil} = agg, %Command{} = create) do
+    %Event{
+      id: create.id,
+      email: create.email,
     }
   end
 end

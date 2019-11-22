@@ -1,4 +1,5 @@
 type _record = {
+  update: bool,
   selectedCube: option(Cube_Model.idType),
   builderCube: Cube_Model.Record.t,
   tab: SideTab.t,
@@ -16,6 +17,7 @@ let _defaultRecord = id => {
   let newCube = {...cube, data: {...cube.data, name: "New Cube"}};
 
   {
+    update: false,
     selectedCube: None,
     builderCube: newCube,
     tab: SearchCard,

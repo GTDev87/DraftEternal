@@ -1,9 +1,9 @@
-defmodule DraftEternalApi.Web.Schema.Domain.Cube.Mutations.CreateCube.GraphQL do
+defmodule DraftEternalApi.Web.Schema.Domain.Cube.Mutations.UpdateCube.GraphQL do
   use Absinthe.Schema.Notation
   use DraftEternalApi.Web.Lib.AbsintheInputUtils
 
   alias DraftEternalApi.Web.Schema.Domain.Cube
-  alias Cube.Mutations.CreateCube
+  alias Cube.Mutations.UpdateCube
   alias Absinthe.Schema.Notation
 
   def_absinthe_input CubeInput do
@@ -15,15 +15,15 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Mutations.CreateCube.GraphQL do
     field(:card_ids, Notation.non_null(Notation.list_of(Notation.non_null(:id))))
   end
 
-  object :create_cube do
-    field :create_cube, type: :cube do
+  object :update_cube do
+    field :update_cube, type: :cube do
       arg(:cube, :cube_input)
 
       resolve(&execute/2)
     end
   end
 
-  alias DraftEternalApi.Web.Schema.Domain.Cube.Mutations.CreateCube.Command
+  alias DraftEternalApi.Web.Schema.Domain.Cube.Mutations.UpdateCube.Command
 
   @spec execute(%{cube: Input.CubeInput.t()}, DraftEternalApi.Guardian.Context.info()) :: {:error, any()} | {:ok, String}
   def execute(args, info) do

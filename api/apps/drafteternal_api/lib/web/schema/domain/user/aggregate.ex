@@ -12,18 +12,12 @@ defmodule DraftEternalApi.Web.Schema.Domain.User.Aggregate do
   @doc """
   Publish an article
   """
-  def execute(%Aggregate{id: nil}, %CreateUser.Command{} = create) do
-    %UserCreated.Event{
-      id: create.id,
-      email: create.email,
-    }
+  def execute(%Aggregate{id: nil} = agg, %CreateUser.Command{} = create) do
+    CreateUser.Command.execute(agg, create)
   end
   # state mutators
 
-  def apply(%Aggregate{} = user, %UserCreated.Event{} = created) do
-    %Aggregate{user |
-      id: created.id,
-      email: created.email,
-    }
+  def apply(%Aggregate{} = agg, %UserCreated.Event{} = created) do
+    UserCreated.Event.apply(agg, created)
   end
 end

@@ -75,7 +75,9 @@ let make = (~user: User.Model.Record.t, ~normalized, ~updateUser) => {
           <Button
             className=cardSelectionAreaOptionsButton
             onClick=((_) => {
-              updateUser(User.Action.LocalAction(OpenModal(SaveCube)))
+              updateUser(
+                User.Action.LocalAction(OpenModal(SaveCube))
+              )
             })
           >
             {ReasonReact.string("SAVE")}

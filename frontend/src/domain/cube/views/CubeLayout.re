@@ -44,30 +44,56 @@ let cardLayoutSearchArea = [%bs.raw {| css(tw`
 `)|}];
 
 [@react.component]
-let make = (~user, ~id, ~normalized, ~updateNormalizr, ~index) => {
+let make = (~user: User.Model.Record.t, ~id, ~normalized, ~updateNormalizr, ~index) => {
+
+  let updateUser = (action) => {
+    MyNormalizr.Converter.User.Remote.updateWithDefault(
+      (),
+      normalized |> Js.Promise.resolve,
+      User.Model.idToTypedId(user.data.id),
+      action,
+    )
+    |> updateNormalizr;
+  };
   let optionCube = MyNormalizr.Converter.Cube.Remote.getRecord(normalized, id);
 
-  let cardIds = 
-    optionCube
-    |> Belt.Option.mapWithDefault(_, [], (cube) => cube.data.cardIds);
-  <div className=cardLayout>
-    <div className=cardLayoutTitle>
-      <div className=cardLayoutTitleString>
-        {ReasonReact.string(Belt.Option.mapWithDefault(optionCube, "", (c) => c.data.name))}
+  Belt.Option.mapWithDefault(optionCube, <div/>, (cube) => {
+    let userId = 
+      optionCube
+      |> Belt.Option.mapWithDefault(_, "", (cube) => User.Model.getUUIDFromId(cube.data.creatorId));
+
+    let iAmCreator = (userId == user.data.id);
+
+    <div className=cardLayout>
+      <div className=cardLayoutTitle>
+        <div className=cardLayoutTitleString>
+          {ReasonReact.string(Belt.Option.mapWithDefault(optionCube, "", (c) => c.data.name))}
+        </div>
+        <div className=cardLayoutButtonWrapper>
+          {
+            iAmCreator ?
+              <Button
+                className=cardLayoutButton
+                onClick=((_) => {
+                  updateUser(CombineReducer(
+                    User.Action.LocalAction(CopyBuilderCube(cube)),
+                    User.Action.LocalAction(ChangeTab(SideTab.CreateCube))
+                  ));
+                  Js.log("BETWEEN");
+                  ();
+                })
+                autoFocus=false
+                innerClassName=cardLayoutButtonInner
+              >
+                {ReasonReact.string("Edit")}
+              </Button> :
+              <div/>
+          }
+        </div>
       </div>
-      <div className=cardLayoutButtonWrapper>
-        <Button
-          className=cardLayoutButton
-          onClick=((_) => ())
-          autoFocus=false
-          innerClassName=cardLayoutButtonInner
-        >
-          {ReasonReact.string("Edit")}
-        </Button>
+      <div className=cardLayoutSearchArea>
+        <SearchCard cardIds=cube.data.cardIds normalized index />
       </div>
     </div>
-    <div className=cardLayoutSearchArea>
-      <SearchCard cardIds normalized index />
-    </div>
-  </div>
+  })
 };

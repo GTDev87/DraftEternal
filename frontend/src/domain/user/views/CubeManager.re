@@ -15,6 +15,7 @@ let deckManagerClass = [%bs.raw {| css(tw`
 
 let deckManagerScrollAreaClass = [%bs.raw {| css(tw`
   overflow-y-scroll
+  h-full
 `)|}];
 
 let deckManagerCubePickerArea = [%bs.raw {| css(tw`
@@ -23,14 +24,14 @@ let deckManagerCubePickerArea = [%bs.raw {| css(tw`
 `)|}];
 
 [@react.component]
-let make = (~user: User.Model.Record.t, ~normalized, ~onCubeClick) => {
+let make = (~cubeIds, ~normalized, ~onCubeClick) => {
   <div className=deckManagerClass>
     <InfiniteScrollLoadNumber
       className=deckManagerScrollAreaClass
       loader={<div>{ReasonReact.string("LOADING...")}</div>}
     >
       {
-        Belt.List.map(user.data.cubeIds, (cId: Cube.Model.idType) => {
+        Belt.List.map(cubeIds, (cId: Cube.Model.idType) => {
           <div
             key=(Cube.Model.getUUIDFromId(cId))
             className=deckManagerCubePickerArea

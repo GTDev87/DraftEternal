@@ -4,6 +4,7 @@ type t =
   | SearchCard
   | CubeManager
   | Cube(Cube_Model.idType)
+  | CubeEdit(Cube_Model.idType)
 ;
 
 type action =
@@ -12,6 +13,7 @@ type action =
   | ToSearchCard
   | ToCubeManager
   | ToCube(Cube_Model.idType)
+  | ToCubeEdit(Cube_Model.idType)
 ;
 
 let all = (guest) => ([
@@ -26,7 +28,8 @@ let toIcon = (sideTabType : t) =>
   | CreateCube => <CubeIcon />
   | SearchCard => <CubeIcon />
   | CubeManager => <CubeIcon />
-  | CubeManager => <div />
+  | Cube(id) => <div />
+  | CubeEdit(id) => <div />
   };
 
 let toAction = (sideTabType : t): action =>
@@ -36,6 +39,7 @@ let toAction = (sideTabType : t): action =>
   | SearchCard => ToSearchCard
   | CubeManager => ToCubeManager
   | Cube(id) => ToCube(id)
+  | CubeEdit(id) => ToCubeEdit(id)
   };
 
 let tabReducer = (): (t, (action) => unit) =>
@@ -47,6 +51,7 @@ let tabReducer = (): (t, (action) => unit) =>
       | ToSearchCard => SearchCard
       | ToCubeManager => CubeManager
       | ToCube(id) => Cube(id)
+      | ToCubeEdit(id) => CubeEdit(id)
       },
       Library,
   );

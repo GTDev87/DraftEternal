@@ -16,5 +16,6 @@ defmodule DraftEternalApi.Web.Schema.Router do
 
   dispatch [
       Cube.Mutations.CreateCube.Command,
+      Cube.Mutations.UpdateCube.Command,
   ], to: Cube.Aggregate
 end

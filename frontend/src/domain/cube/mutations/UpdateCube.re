@@ -1,7 +1,7 @@
 module Mutation = [%graphql
   {|
-    mutation CreateCube($id: ID!, $name: String!, $description: String!, $display: DisplayType!, $creatorId: ID!, $cardIds: [ID!]) {
-      createCube(cube: {id: $id, name: $name, description: $description, display: $display, creatorId: $creatorId, cardIds: $cardIds}) {
+    mutation Update($id: ID!, $name: String!, $description: String!, $display: DisplayType!, $creatorId: ID!, $cardIds: [ID!]) {
+      updateCube(cube: {id: $id, name: $name, description: $description, display: $display, creatorId: $creatorId, cardIds: $cardIds}) {
         ...Cube_Model.Fragment.CubeFields
       }
     }

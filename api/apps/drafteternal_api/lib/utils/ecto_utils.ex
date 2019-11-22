@@ -94,5 +94,10 @@ defmodule DraftEternalApi.Web.Lib.EctoUtils do
           update_in(model_module, multi, prev_struct, Map.from_struct(struct_params), options)
       end
     end
+
+    @spec delete_all_in(any(), Ecto.Multi.t(), any(), keyword()) :: Ecto.Multi.t()
+    def delete_all_in(model_module, multi, query, options \\ []) do
+      Ecto.Multi.delete_all(multi, :"update_#{model_module.name()}_#{options[:suffix] || ""}", query)
+    end
   end
 end

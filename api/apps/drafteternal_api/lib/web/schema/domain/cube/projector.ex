@@ -5,10 +5,14 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Projector do
     consistency: :strong
 
   alias DraftEternalApi.Web.Schema.Domain.Cube.Events.{
-    CubeCreated
+    CubeCreated,
+    CubeUpdated,
   }
 
   project(%CubeCreated.Event{} = event, fn multi ->
     CubeCreated.Projection.execute(multi, event)
+  end)
+  project(%CubeUpdated.Event{} = event, fn multi ->
+    CubeUpdated.Projection.execute(multi, event)
   end)
 end

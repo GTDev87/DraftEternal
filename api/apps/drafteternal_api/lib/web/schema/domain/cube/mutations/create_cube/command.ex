@@ -10,15 +10,17 @@ defmodule DraftEternalApi.Web.Schema.Domain.Cube.Mutations.CreateCube.Command do
 
   use ExConstructor
   alias DraftEternalApi.Web.Schema.Domain.Cube.Mutations.CreateCube.Command
+  alias DraftEternalApi.Web.Schema.Domain.Cube.Events.CubeCreated.Event
+  alias DraftEternalApi.Web.Schema.Domain.Cube.Aggregate
 
-  def update(%Command{} = create_cube, cube) do
-    %Command{create_cube |
-      id: cube.id,
-      name: cube.name,
-      description: cube.description,
-      display: cube.display,
-      creator_id: cube.creator_id,
-      card_ids: cube.card_ids,
+  def execute(%Aggregate{id: nil} = cube, %Command{} = create) do
+    %Event{
+      id: create.id,
+      name: create.name,
+      description: create.description,
+      display: create.display,
+      creator_id: create.creator_id,
+      card_ids: create.card_ids,
     }
   end
 end

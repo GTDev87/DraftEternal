@@ -14,10 +14,11 @@ let infinteScrollLoadNumbersArea = [%bs.raw {| css(tw`
   flex
   flex-wrap
   overflow-y-scroll
+  h-full
 `)|}];
 
 let infinteScrollLoadNumbersButton = [%bs.raw {| css(tw`
-  m-2
+  p-2
 `)|}];
 
 

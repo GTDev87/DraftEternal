@@ -25,6 +25,7 @@ let toString = (sideTabType : SideTab.t, normalized) : string =>
   | SideTab.CreateCube => "+ Create Cube"
   | SideTab.CubeManager => "Cube Manager"
   | SideTab.Cube(id) => ""
+  | SideTab.CubeEdit(id) => ""
   };
 
 

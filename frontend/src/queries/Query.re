@@ -1,2 +1,2 @@
 module Member = Query_Member;
-module Card = Query_Card;
+module CubeCard = Query_CubeCard;

@@ -4,6 +4,7 @@ defmodule DraftEternalApi.Web.Schema.General.Queries do
 
   object :general_query do
     field(:cards, non_null(list_of(non_null(:card))), resolve: &get_cards/2)
+    field(:cubes, non_null(list_of(non_null(:cube))), resolve: &get_cubes/2)
   end
 
   def get_json(filename) do
@@ -35,5 +36,16 @@ defmodule DraftEternalApi.Web.Schema.General.Queries do
     card_ids = Enum.map(non_nil_cards, id_fn)
 
     {:ok, card_ids}
+  end
+
+  def get_cubes(args, _info) do
+    {
+      :ok,
+      DraftEternalApi.Web.Model.Cube.all([])
+      |> Map.values()
+      |> Enum.filter(fn c -> DraftEternalApi.Web.Schema.Domain.Cube.Types.DisplayType.to_enum(c.display) == :public end)
+      |> Enum.sort(&(NaiveDateTime.compare(&1.inserted_at, &2.inserted_at) == :lt))
+      |> Enum.map(fn c -> c.id end)
+    }
   end
 end

@@ -39,7 +39,7 @@ let dashboardLayoutModalClass = [%bs.raw {| css(tw`
 
 
 [@react.component]
-let make = (~id: Schema.User.id, ~guest, ~cardIds, ~normalized, ~updateNormalizr, ~index) => {
+let make = (~id: Schema.User.id, ~guest, ~cardIds, ~cubeIds, ~normalized, ~updateNormalizr, ~index) => {
 
   let optionUser =
     MyNormalizr.Converter.User.Remote.getRecord(normalized, id);
@@ -64,13 +64,18 @@ let make = (~id: Schema.User.id, ~guest, ~cardIds, ~normalized, ~updateNormalizr
         autoFocus=false
         isOpen={user.local.modal !== None}
         className=dashboardLayoutModalClass
-        onRequestClose={() => updateUser(User.Action.LocalAction(CloseModal))}
+        onRequestClose={() => updateUser(CombineReducer(User.Action.LocalAction(CloseModal), User.Action.LocalAction(ResetBuilderCube)))}
       >
         {
           /* REMEMBER RESET ID IN LOCAL */
           switch (user.local.modal) {
           | Some(SaveCube) =>
-              <SaveCubeContentModal user updateUser normalized  />
+              <SaveCubeContentModal
+                user
+                updateUser
+                normalized
+                afterSave=User.Action.LocalAction(ResetBuilderCube)
+              />
           | None => <> </>
           }
         }
@@ -81,10 +86,25 @@ let make = (~id: Schema.User.id, ~guest, ~cardIds, ~normalized, ~updateNormalizr
     </div>
     <div className=dashboardContentArea>
       <div className=dashboardContentAreaSideBar>
-        <SideBar user guest chooseTab={(t) => updateUser(User.Action.LocalAction(ChangeTab(t)))} normalized/>
+        <SideBar
+          user
+          guest
+          chooseTab={(t) =>
+            updateUser(
+              CombineReducer(
+                switch(t){
+                | SideTab.CreateCube => User.Action.LocalAction(ResetBuilderCube)
+                | _ => User.Action.Nothing
+                },
+                User.Action.LocalAction(ChangeTab(t))
+              )
+            )
+          }
+          normalized
+        />
       </div>
       <div className=dashboardContentAreaSelection>
-        <ContentArea user guest cardIds normalized updateNormalizr index />
+        <ContentArea user guest cardIds cubeIds normalized updateNormalizr index />
       </div>
     </div>
   </div>;

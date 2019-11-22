@@ -15,7 +15,7 @@ let reduce = (action, local: model) =>
   | OpenModal(modal) => {...local, modal: Some(modal)}
   | CloseModal => {...local, modal: None}
   | ChooseCube(id) => {...local, selectedCube: id}
-  | CopyBuilderCube(cube) => {...local, builderCube: cube}
-  | ResetBuilderCube => {...local, builderCube: Cube_Model.Record.default()}
+  | CopyBuilderCube(cube) => {...local, builderCube: cube, update: true}
+  | ResetBuilderCube => {...local, builderCube: Cube_Model.Record.default(), update: false}
   | UpdateBuilderCube(a) => {...local, builderCube: BuilderCube.Action.reduce(a, local.builderCube)}
 };

@@ -1,16 +1,21 @@
-module CardContainer = ApolloQuery.Container(Query.Card.M);
+module CubeCardContainer = ApolloQuery.Container(Query.CubeCard.M);
 
 let index = FlexSearch.create();
 
 [@react.component]
 let make = () =>
 
-  <CardContainer query={Query.Card.M.make()} errorComponent={<div />} >
+  <CubeCardContainer query={Query.CubeCard.M.make()} errorComponent={<div />} >
     ...{(~response) => {
       let cardIds =
         response##cards
         |> Belt.List.fromArray
         |> Belt.List.map(_, Card.Model.objectToId);
+
+      let cubeIds =
+        response##cubes
+        |> Belt.List.fromArray
+        |> Belt.List.map(_, Cube.Model.objectToId);
       <Member.Container
         errorComponent={
           let guest = User_Record.guestData();
@@ -26,7 +31,7 @@ let make = () =>
                 None; /* May need a cleanup function */
               }, [||]);
               
-              <DashboardLayout guest=true id={User.Model.idToTypedId(guest.data.id)} normalized updateNormalizr cardIds index/>
+              <DashboardLayout guest=true id={User.Model.idToTypedId(guest.data.id)} normalized updateNormalizr cubeIds cardIds index/>
             }}
           </NormalizerInit>
         }>
@@ -43,7 +48,7 @@ let make = () =>
                     None; /* May need a cleanup function */
                   }, [||]);
 
-                  <DashboardLayout guest=false id={User.Model.idToTypedId(user.data.id)} normalized updateNormalizr cardIds index/>
+                  <DashboardLayout guest=false id={User.Model.idToTypedId(user.data.id)} normalized updateNormalizr cubeIds cardIds index/>
                 }}
               </NormalizerInit>
             }
@@ -51,4 +56,4 @@ let make = () =>
         }
       </Member.Container>
     }}
-  </CardContainer>
+  </CubeCardContainer>

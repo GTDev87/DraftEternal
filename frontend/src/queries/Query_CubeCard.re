@@ -4,6 +4,9 @@ module M = [%graphql
       cards {
         ...Card_Model.Fragment.Fields
       }
+      cubes {
+        ...Cube_Model.Fragment.Fields
+      }
     }
   |}
 ];
