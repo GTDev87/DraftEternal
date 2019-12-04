@@ -2,7 +2,7 @@
 type action =
   | NoOpKeyDown;
 
-type model = Cube_Model.Record.t;
+type model = Cube_Model.M.Record.t;
 
 let rec reduce = (action, promise: Js.Promise.t(model)): Js.Promise.t(model) =>
   promise

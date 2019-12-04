@@ -3,8 +3,8 @@ type t =
   | CreateCube
   | SearchCard
   | CubeManager
-  | Cube(Cube_Model.idType)
-  | CubeEdit(Cube_Model.idType)
+  | Cube(Cube_Model.M.idType)
+  | CubeEdit(Cube_Model.M.idType)
 ;
 
 type action =
@@ -12,8 +12,8 @@ type action =
   | ToCreateCube
   | ToSearchCard
   | ToCubeManager
-  | ToCube(Cube_Model.idType)
-  | ToCubeEdit(Cube_Model.idType)
+  | ToCube(Cube_Model.M.idType)
+  | ToCubeEdit(Cube_Model.M.idType)
 ;
 
 let all = (guest) => ([

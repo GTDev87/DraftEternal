@@ -1,13 +1,10 @@
 type _data = {
-  id: UUID.t,
-  name: string,
-  imageUrl: string,
-  thumbnailUrl: string,
-  cardText: string,
-  cost: int,
-  influence: list(InfluenceType.t),
-  colors: list(InfluenceType.t),
+  id: string,
+  packNumber: int,
+  cardIds: list(string),
+  initialCardIds: list(string),
 };
+
 
 module Local = ModelUtils.CreateFakeLocal();
 
@@ -16,14 +13,11 @@ type _record = RecordType.Type.t(_data, Local.Record.t);
 let _defaultData = (id) => {
   {
     id: id,
-    name: "",
-    imageUrl: "",
-    thumbnailUrl: "",
-    cardText: "",
-    cost: 0,
-    influence: [],
-    colors: [],
+    packNumber: 0,
+    cardIds: [],
+    initialCardIds: [],
   }
+  /* UI */
 };
 
 let _defaultRecordId = (id): _record => {

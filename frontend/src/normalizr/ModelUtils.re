@@ -19,6 +19,7 @@ module type RootModelType = {
   type t = ..;
   type id = ..;
   type record = ..;
+  type data;
 
   type t += EMPTY_T;
   type id += EMPTY_ID;
@@ -29,6 +30,7 @@ module RootModel : RootModelType = {
   type t = ..;
   type id = ..;
   type record = ..;
+  type data;
 
   /* This is here until https://github.com/facebook/reason/issues/1597 */
   /* https://github.com/ocaml/ocaml/pull/1546 */
@@ -78,16 +80,19 @@ module GenerateModel = (Root: RootModelType, ()) => {
   module AddModel = (ModelType : Domain.Model) :
     (Domain.ModelRecordType
       with module Model = ModelType
+      and type _data = Root.data
       and type _record = Root.record
       and type model = ModelType.Record.t
       and type Wrapper.model = ModelType.Record.t
       and type Wrapper.rootRecord = Root.record
-      and type Model.Record.t = ModelType.Record.t) =>
-  {
+      and type Model.Record.t = ModelType.Record.t
+    ) => {
     module Model = ModelType;
+    let _defaultData = Model._defaultData;
 
     type model = Model.Record.t;
     type Root.record += Record(model);
+    type _data = Root.data;
     type _record = Root.record;
     type record = (_record, _t);
 
@@ -212,3 +217,18 @@ module EmptyNormalizr(
       and type _record = RootModel.record
   ) => AddRecord(Implementation, Domain);
 };
+
+module CreateFakeLocal() : (
+  Domain.LocalRecord
+    with type _record = unit
+) {
+
+  type _record = unit;
+  
+  let _defaultRecord = (id: UUID.t) => ();
+  
+  module Record = {
+    type t = unit;
+    let default = (id: UUID.t) => ();
+  };
+}

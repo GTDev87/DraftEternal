@@ -6,7 +6,7 @@ type action =
   | ApolloUpdateCubeMutationWithAction(ApolloType.t(UpdateCube.Mutation.t), action)
   | CombineReducer(action, action);
 
-type model = User_Model.Record.t;
+type model = User_Model.M.Record.t;
 
 let rec reduce = (action, promise: Js.Promise.t(model)): Js.Promise.t(model) =>
   promise

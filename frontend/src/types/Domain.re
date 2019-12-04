@@ -6,7 +6,7 @@ module type Model = {
   type _data;
   type _local;
 
-  type _record = RecordType.t(_data, _local);
+  type _record = RecordType.Type.t(_data, _local);
   type idType;
   type rootIdType;
   let idToRootId: (idType) => rootIdType;
@@ -39,6 +39,43 @@ module type Model = {
 
   let fragmentType: string;
   let fragmentName: string;
+  let _defaultData: (UUID.t) => _data;
+};
+
+module type Record = {
+  type _data;
+  type _record;
+  
+  let _defaultData: (UUID.t) => _data;
+  let _defaultRecordId: (UUID.t) => _record;
+  let _defaultRecord: unit => _record;
+  let findId: (_record) => UUID.t;
+};
+
+module type FragmentObj = {
+  type data;
+
+  module Fields: {
+    type t;
+    let name: string;
+    let query: string;
+    let parse: (Js.Json.t) => t;
+  };
+  
+  let fragmentType: string;
+  
+  let fromObject: (Fields.t) => data;
+};
+
+module type LocalRecord = {
+  type _record;
+  
+  let _defaultRecord: (UUID.t) => _record;
+  
+  module Record: {
+    type t = _record;
+    let default: (UUID.t) => _record;
+  };
 };
 
 module type Container {
@@ -67,6 +104,7 @@ module type ModelRecordType {
   module Model: Model;
   module Wrapper: DomainWrapper;
   type model;
+  type _data;
   type _record;
   type _record += Record(Model.Record.t);
 };

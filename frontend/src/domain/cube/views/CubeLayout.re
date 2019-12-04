@@ -37,6 +37,11 @@ let cardLayoutButtonWrapper = [%bs.raw {| css(tw`
   flex
   justify-center
   items-center
+  ml-4
+`)|}];
+
+let cardLayoutButtonArea = [%bs.raw {| css(tw`
+  flex
 `)|}];
 
 let cardLayoutSearchArea = [%bs.raw {| css(tw`
@@ -69,26 +74,36 @@ let make = (~user: User.Model.Record.t, ~id, ~normalized, ~updateNormalizr, ~ind
         <div className=cardLayoutTitleString>
           {ReasonReact.string(Belt.Option.mapWithDefault(optionCube, "", (c) => c.data.name))}
         </div>
-        <div className=cardLayoutButtonWrapper>
-          {
-            iAmCreator ?
-              <Button
-                className=cardLayoutButton
-                onClick=((_) => {
-                  updateUser(CombineReducer(
-                    User.Action.LocalAction(CopyBuilderCube(cube)),
-                    User.Action.LocalAction(ChangeTab(SideTab.CreateCube))
-                  ));
-                  Js.log("BETWEEN");
-                  ();
-                })
-                autoFocus=false
-                innerClassName=cardLayoutButtonInner
-              >
-                {ReasonReact.string("Edit")}
-              </Button> :
-              <div/>
-          }
+        <div className=cardLayoutButtonArea>
+          <div className=cardLayoutButtonWrapper>
+            <Button
+              className=cardLayoutButton
+              onClick=((_) => ()) /* HELLO HERE NEED TO DRAFT START */
+              autoFocus=false
+              innerClassName=cardLayoutButtonInner
+            >
+              {ReasonReact.string("Draft")}
+            </Button>
+          </div>
+          <div className=cardLayoutButtonWrapper>
+            {
+              iAmCreator ?
+                <Button
+                  className=cardLayoutButton
+                  onClick=((_) =>
+                    updateUser(CombineReducer(
+                      User.Action.LocalAction(CopyBuilderCube(cube)),
+                      User.Action.LocalAction(ChangeTab(SideTab.CreateCube))
+                    )) |> ignore
+                  )
+                  autoFocus=false
+                  innerClassName=cardLayoutButtonInner
+                >
+                  {ReasonReact.string("Edit")}
+                </Button> :
+                <div/>
+            }
+          </div>
         </div>
       </div>
       <div className=cardLayoutSearchArea>

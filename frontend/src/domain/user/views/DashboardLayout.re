@@ -76,6 +76,13 @@ let make = (~id: Schema.User.id, ~guest, ~cardIds, ~cubeIds, ~normalized, ~updat
                 normalized
                 afterSave=User.Action.LocalAction(ResetBuilderCube)
               />
+          /* | Some(ClientDraftCube(id, Start)) =>
+              <CubeClientDraftModal
+                id
+                updateNormalizr
+                normalized
+                index
+              /> */
           | None => <> </>
           }
         }

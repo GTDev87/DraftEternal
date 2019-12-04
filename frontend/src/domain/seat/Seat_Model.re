@@ -1,8 +1,8 @@
 module M = {
   type rootIdType = ModelUtils.RootModel.id;
-  module ModelSchema = Schema.User;
-  module ModelRecord = User_Record;
-  module Fragment = User_Fragment;
+  module ModelSchema = Schema.Seat;
+  module ModelRecord = Seat_Record;
+  module Fragment = FragmentUtils.CreateFakeFragment(ModelRecord);
 
   /* ModelSchema */
   type idType = ModelSchema.id;

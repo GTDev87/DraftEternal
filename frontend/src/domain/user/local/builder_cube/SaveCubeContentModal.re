@@ -84,6 +84,12 @@ let make = (~user: User.Model.Record.t, ~normalized, ~updateUser, ~afterSave=?) 
 
                     Js.log("user.local.update = ");
                     Js.log(user.local.update);
+
+                    let afterAction = User_Action.CombineReducer(
+                      LocalAction(CloseModal),
+                      LocalAction(ChangeTab(SideTab.Cube(Cube.Model.idToTypedId(user.local.builderCube.data.id))))
+                    );
+
                     let action =
                       user.local.update ?
                         User_Action.ApolloUpdateCubeMutationWithAction(
@@ -95,7 +101,7 @@ let make = (~user: User.Model.Record.t, ~normalized, ~updateUser, ~afterSave=?) 
                             ~creatorId=user.local.builderCube.data.creatorId,
                             ~cardIds=user.local.builderCube.data.cardIds,
                           ),
-                          LocalAction(CloseModal)
+                          afterAction
                         ) :
                         User_Action.ApolloCreateCubeMutationWithAction(
                           () => createMutation(
@@ -106,7 +112,7 @@ let make = (~user: User.Model.Record.t, ~normalized, ~updateUser, ~afterSave=?) 
                             ~creatorId=user.local.builderCube.data.creatorId,
                             ~cardIds=user.local.builderCube.data.cardIds,
                           ),
-                          LocalAction(CloseModal)
+                          afterAction
                         );
                     
                     updateUser(

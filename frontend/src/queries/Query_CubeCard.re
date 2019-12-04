@@ -2,10 +2,10 @@ module M = [%graphql
   {|
     query general {
       cards {
-        ...Card_Model.Fragment.Fields
+        ...Card_Model.M.Fragment.Fields
       }
       cubes {
-        ...Cube_Model.Fragment.Fields
+        ...Cube_Model.M.Fragment.Fields
       }
     }
   |}

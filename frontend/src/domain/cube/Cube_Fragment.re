@@ -1,4 +1,4 @@
-module Record = Cube_Record;
+type data = Cube_Record._data;
 
 module GraphFragment = [%graphql
   {|
@@ -18,7 +18,7 @@ module Fields = GraphFragment.CubeFields;
 
 let fragmentType = "Cube";
 
-let fromObject = (obj: Fields.t): Record._data => {
+let fromObject = (obj: Fields.t): data => {
   id: obj##id,
   name: obj##name,
   description: obj##description,

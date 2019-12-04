@@ -1,4 +1,4 @@
-module Record = Card_Record;
+type data = Card_Record._data;
 
 module GraphFragment = [%graphql
   {|
@@ -28,7 +28,7 @@ module Fields = GraphFragment.CardFields;
 
 let fragmentType = "Card";
 
-let fromObject = (obj: Fields.t): Record._data => {
+let fromObject = (obj: Fields.t): data => {
   id: obj##id,
   name: obj##name,
   imageUrl: obj##imageUrl,

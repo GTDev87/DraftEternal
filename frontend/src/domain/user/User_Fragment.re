@@ -1,4 +1,4 @@
-module Record = User_Record;
+type data = User_Record._data;
 
 module GraphFragment = [%graphql
   {|
@@ -6,7 +6,7 @@ module GraphFragment = [%graphql
       id
       email
       cubes {
-        ...Cube_Model.Fragment.Fields
+        ...Cube_Model.M.Fragment.Fields
       }
     }
   |}
@@ -17,7 +17,7 @@ module Fields = GraphFragment.UserFields;
 
 let fragmentType = "User";
 
-let fromObject = (obj: Fields.t): Record._data => {
+let fromObject = (obj: Fields.t): data => {
   {
     id: obj##id,
     email: obj##email,
@@ -25,6 +25,6 @@ let fromObject = (obj: Fields.t): Record._data => {
     cubeIds:
       obj##cubes
       |> Belt.List.fromArray
-      |> Belt.List.map(_, Cube_Model.objectToId),
+      |> Belt.List.map(_, Cube_Model.M.objectToId),
   };
 }

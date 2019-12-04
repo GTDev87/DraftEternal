@@ -1,4 +1,4 @@
-module Model = Card_Model;
+module Model = Card_Model.M;
 
 module ModelSchema = Schema.Card;
 module Record = ModelSchema.AddModel(Model);
