@@ -5,24 +5,17 @@ let tryAgainifNullOption = (optionA, optionB) =>
   };
 
 module DomainTypeConverter = (
+  NormalizrGenerator : ModelUtils.NORMALIZR_GENERATOR_TYPE
+    with type t = Domain.RootModel.t
+    and type id = Domain.RootModel.id
+    and type record = Domain.RootModel.record
+    and type normalizedType = NormalizrNew.normalizedSchema(Domain.RootModel.t, UUID.t, Domain.RootModel.record),
   DomainType: Domain.M
-    with type Model.rootIdType = ModelUtils.RootModel.id,
-  NormalizrGenerator : ModelUtils.NormalizrGeneratorType
-    with type t = ModelUtils.RootModel.t
-    and type id = DomainType.Model.rootIdType
-    and type record = ModelUtils.RootModel.record
-    and type normalizedType = NormalizrNew.normalizedSchema(ModelUtils.RootModel.t, UUID.t, ModelUtils.RootModel.record),
-  Container: Domain.Container
-    with type idType = DomainType.Model.idType
-    and type record = DomainType.Model.Record.t
-    and type config = DomainType.Model.Fragment.Fields.t,
-  Wrapper:
-    Domain.DomainWrapper
-      with type model = DomainType.Model.Record.t
-      and type rootRecord = ModelUtils.RootModel.record,
 ) => {
+  module Container = DomainType.Container;
+  module Wrapper = DomainType.Record.Wrapper;
 
-  let normalizerGetItemFromSchema: (NormalizrGenerator.normalizedType, DomainType.Model.idType) => option(Wrapper.rootRecord) =
+  let normalizerGetItemFromSchema: (NormalizrGenerator.normalizedType, DomainType.Model.idType) => option(Domain.RootModel.record) =
     (
       a =>
         a

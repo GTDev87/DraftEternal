@@ -38,3 +38,5 @@ let fromObject = (obj: Fields.t): data => {
   colors: obj##colors |> Belt.List.fromArray,
   influence: obj##influence |> Belt.List.fromArray,
 };
+
+let toId = (obj) => obj##id;

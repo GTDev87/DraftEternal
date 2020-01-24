@@ -1,14 +1,18 @@
-module M = {
-  type rootIdType = ModelUtils.RootModel.id;
-  module ModelSchema = Schema.Seat;
-  module ModelRecord = Seat_Record;
-  module Fragment = FragmentUtils.CreateFakeFragment(ModelRecord);
+// module M = ModelUtils.BuildModel(Seat_Record, Schema.Seat, FragmentUtils.CreateFakeFragment(Seat_Record));
 
-  /* ModelSchema */
-  type idType = ModelSchema.id;
-  let idToRootId = ModelSchema.idToRootId;
-  let getUUIDFromId = (id: idType): UUID.t => ModelSchema.idToString(id);
-  let idToTypedId = (id: UUID.t): idType => ModelSchema.stringToId(id);
+module M = {
+  module ModelSchemaType = Schema.Seat;
+  module InternalSchema = ModelSchemaType.Root;
+  module ModelRecord = Seat_Record;
+  module Fragment = FragmentUtils.CreateFakeFragment(Seat_Record);
+
+
+  /* ModelSchemaType */
+  type rootIdType = Domain.RootModel.id;
+  type idType = ModelSchemaType.id;
+  let idToRootId = ModelSchemaType.idToRootId;
+  let getUUIDFromId = (id: idType): UUID.t => ModelSchemaType.idToString(id);
+  let idToTypedId = (id: UUID.t): idType => ModelSchemaType.stringToId(id);
 
   /* ModelRecord */
   type _data = ModelRecord._data;

@@ -1,14 +1,19 @@
+// module M = ModelUtils.BuildModel(Cube_Record, Schema.Cube, Cube_Fragment);
+
+
 module M = {
-  type rootIdType = ModelUtils.RootModel.id;
-  module ModelSchema = Schema.Cube;
+  module ModelSchemaType = Schema.Cube;
+  module InternalSchema = ModelSchemaType.Root;
   module ModelRecord = Cube_Record;
   module Fragment = Cube_Fragment;
 
-  /* ModelSchema */
-  type idType = ModelSchema.id;
-  let idToRootId = ModelSchema.idToRootId;
-  let getUUIDFromId = (id: idType): UUID.t => ModelSchema.idToString(id);
-  let idToTypedId = (id: UUID.t): idType => ModelSchema.stringToId(id);
+
+  /* ModelSchemaType */
+  type rootIdType = Domain.RootModel.id;
+  type idType = ModelSchemaType.id;
+  let idToRootId = ModelSchemaType.idToRootId;
+  let getUUIDFromId = (id: idType): UUID.t => ModelSchemaType.idToString(id);
+  let idToTypedId = (id: UUID.t): idType => ModelSchemaType.stringToId(id);
 
   /* ModelRecord */
   type _data = ModelRecord._data;

@@ -1,4 +1,4 @@
-module type Type = {
+module type TYPE = {
   type _data;
   let _defaultData: (string) => _data;
 }

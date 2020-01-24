@@ -5,7 +5,7 @@ type action =
 
 
 [@react.component]
-let make = (~records: list(ModelUtils.RootModel.record)=[], ~children) => {
+let make = (~records: list(Domain.RootModel.record)=[], ~children) => {
   let (state, dispatch) =
     React.useReducer(
       (_, action) =>

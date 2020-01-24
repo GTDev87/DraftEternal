@@ -1,8 +1,8 @@
 module Container = (
   ReadFragment: ApolloClient.ReadFragment,
-  Model: Domain.Model
+  Model: Domain.MODEL
 ): (
-  Domain.Container
+  Domain.CONTAINER
     with type record = Model.Record.t
     and type config = Model.Fragment.Fields.t
     and type idType = Model.idType

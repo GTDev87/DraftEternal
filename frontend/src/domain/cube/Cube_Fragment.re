@@ -26,3 +26,5 @@ let fromObject = (obj: Fields.t): data => {
   cardIds: obj##cardIds |> Belt.List.fromArray |> Belt.List.map(_, Schema.Card.stringToId),
   creatorId: Schema.User.stringToId(obj##creatorId),
 };
+
+let toId = (obj) => obj##id;

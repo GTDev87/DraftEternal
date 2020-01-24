@@ -1,8 +1,7 @@
-
 module Model = Cube_Model.M;
 
 module ModelSchema = Schema.Cube;
-module Record = ModelSchema.AddModel(Model);
+module Record = ModelUtils.AddModel(ModelSchema, Model);
 
 module Action = Cube_Action;
 module Mutation = Cube_Mutation;

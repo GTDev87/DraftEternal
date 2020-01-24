@@ -6,7 +6,7 @@ type apolloMutationType('a) = (
   unit
 ) => Js.Promise.t(ReasonApolloHooks.Mutation.controlledVariantResult('a));
 
-module type MutationInternal = {
+module type MUTATION_INTERNAL = {
     module Config: { let query: string; type t; let parse: Js.Json.t => t; }
 
     type mutationFunctionType;
@@ -14,7 +14,7 @@ module type MutationInternal = {
     let callMutationWithApollo: apolloMutationType(Config.t) => mutationFunctionType;
 };
 
-module type MutationContainer = {
+module type MUTATION_CONTAINER = {
     module Config: { let query: string; type t; let parse: Js.Json.t => t; }
 
     type apolloFunctionType = apolloMutationType(Config.t);
@@ -28,8 +28,8 @@ module type MutationContainer = {
       (~children: mutationFunctionType => React.element, ~key: string=?, unit) => {. "children": mutationFunctionType => React.element} = "";
 };
 
-module CreateMutationContainer = (MutationInternalType: MutationInternal) : (
-    MutationContainer
+module CreateMutationContainer = (MutationInternalType: MUTATION_INTERNAL) : (
+    MUTATION_CONTAINER
         with type mutationFunctionType = MutationInternalType.mutationFunctionType
         and module Config = MutationInternalType.Config
         and type apolloFunctionType = apolloMutationType(MutationInternalType.Config.t)

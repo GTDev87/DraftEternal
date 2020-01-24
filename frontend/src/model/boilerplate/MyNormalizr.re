@@ -1,15 +1,22 @@
 
-module FullReduced = ModelUtils.AddRecord(
+module FullReduced = 
+  ModelUtils.AddRecord(
+    User.Record,
     ModelUtils.AddRecord(
-      ModelUtils.AddRecord(ModelUtils.EmptyNormalizr(ModelUtils.RootModel), Cube.Record),
-    Card.Record),
-  User.Record
-);
+      Card.Record,
+      ModelUtils.AddRecord(
+        Cube.Record,
+        ModelUtils.EmptyNormalizr(
+          Domain.RootModel
+        )
+      )
+    )
+  );
 
 module Converter = {
   // module Profile = NormalizrSetup.DomainTypeConverter(Profile, FullReduced, Profile.Container, Profile.Record.Wrapper);
-  module User = NormalizrSetup.DomainTypeConverter(User, FullReduced, User.Container, User.Record.Wrapper);
-  module Card = NormalizrSetup.DomainTypeConverter(Card, FullReduced, Card.Container, Card.Record.Wrapper);
-  module Cube = NormalizrSetup.DomainTypeConverter(Cube, FullReduced, Cube.Container, Cube.Record.Wrapper);
+  module User = NormalizrSetup.DomainTypeConverter(FullReduced, User);
+  module Card = NormalizrSetup.DomainTypeConverter(FullReduced, Card);
+  module Cube = NormalizrSetup.DomainTypeConverter(FullReduced, Cube);
 };
 

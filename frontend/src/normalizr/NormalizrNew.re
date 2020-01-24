@@ -6,7 +6,7 @@ type typeConversionFunction('rType, 'schemaType, 'uuid) =
 type idConversionFunction('idType, 'schemaType, 'uuid) =
   'idType => ('schemaType, 'uuid);
 
-module type Normalizr = {
+module type NORMALIZR = {
   let defaultNormalized: list(unit);
   let addOrModifyById:
     (recordList('uuid, 'rType), 'rType, 'uuid) => recordList('uuid, 'rType);

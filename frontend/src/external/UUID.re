@@ -21,9 +21,9 @@ let globalRandomString = geneateGlobalRandomString();
      let namespace: string;
    }; */
 
-module type UUIDSeedType = {let namespace: string;};
+module type UUID_SEED_TYPE = {let namespace: string;};
 
-module V5Random = (UUIDSeed: UUIDSeedType) => {
+module V5Random = (UUIDSeed: UUID_SEED_TYPE) => {
   let namespace = UUIDSeed.namespace;
 
   let generateSeqUUID = () => generateUUIDV5(globalRandomString, namespace);

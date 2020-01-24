@@ -15,48 +15,38 @@ let getConnectionList = (items, idFunction) =>
   |> Belt.List.fromArray
   |> Belt.List.map(_, (edge) => Belt.Option.map(edge, (e) => idFunction(e##node)));
 
-module type RootModelType = {
-  type t = ..;
-  type id = ..;
-  type record = ..;
-  type data;
 
-  type t += EMPTY_T;
-  type id += EMPTY_ID;
-  type record += EMPTY_RECORD;
-};
+// module Root: ROOT_MODEL;
 
-module RootModel : RootModelType = {
-  type t = ..;
-  type id = ..;
-  type record = ..;
-  type data;
+//   /* module CreatedType: SchemaType; */
 
-  /* This is here until https://github.com/facebook/reason/issues/1597 */
-  /* https://github.com/ocaml/ocaml/pull/1546 */
-  type t += EMPTY_T;
-  type id += EMPTY_ID;
-  type record += EMPTY_RECORD;
-};
+//   type id;
+//   type _t =  SchemaType.t;
+//   type _id;
 
-module type SchemaType = {
-  type t = Type;
-};
+//   let idToString: (id) => UUID.t
+//   let idToRootId: (id) => _id;
+//   let stringToId: (UUID.t) => id;
 
-module GenerateType = () => {
-  type t = Type;
-};
+//   module AddModel: (ModelType : MODEL) => MODEL_RECORD;
+// };
 
-module GenerateModel = (Root: RootModelType, ()) => {
-  module CreatedType = GenerateType();
-  type _t = CreatedType.t;
-
-  type Root.id += Id(UUID.t);
-  type _id = Root.id;
-
+module GenerateModel = (Root: Domain.ROOT_MODEL, ()): (
+  Domain.SCHEMA_TYPE
+    with module Root = Root
+) => {
+  module Root = Root;
+  type _t = Domain.SchemaType.t;
+/* LOOK HERE */
   type Root.t += Schema;
+  type Root.t += Schema = Schema;
+
+  type Domain.RootModel.id += Id(UUID.t);
+  type Domain.RootModel.id += Id = Id;
+
+
   type t = Root.t;
-  type id = (_id, _t);
+  type id = (Domain.RootModel.id, _t);
 
   let idToString = (id: id) : UUID.t => {
     switch(id){
@@ -65,59 +55,75 @@ module GenerateModel = (Root: RootModelType, ()) => {
     };
   };
 
-  let idToRootId = (id: id) : _id =>
+  let idToRootId = (id: id) : Domain.RootModel.id =>
     switch(id){
     | (Id(uuid), _t) => Id(uuid)
     };
 
-  let rootIdToId = (id: _id) : id =>
+  let rootIdToId = (id: Domain.RootModel.id) : id =>
     switch(id){
     | id => (id, Type);
     };
 
   let stringToId = (uuid: UUID.t): id => (Id(uuid), Type);
+};
 
-  module AddModel = (ModelType : Domain.Model) :
-    (Domain.ModelRecordType
-      with module Model = ModelType
-      and type _data = Root.data
-      and type _record = Root.record
-      and type model = ModelType.Record.t
-      and type Wrapper.model = ModelType.Record.t
-      and type Wrapper.rootRecord = Root.record
-      and type Model.Record.t = ModelType.Record.t
-    ) => {
-    module Model = ModelType;
-    let _defaultData = Model._defaultData;
+module AddModel = (
+  Schema : Domain.SCHEMA_TYPE,
+  ModelType : Domain.MODEL
+) :
+  (Domain.MODEL_RECORD
+    with module Model = ModelType
+    and module Root = Schema.Root
+    and type _data = Schema.Root.data
+    and type _record = Domain.RootModel.record
+    and type model = ModelType.Record.t
+    and type Wrapper.model = ModelType.Record.t
+    and type Wrapper.rootRecord = Domain.RootModel.record
+    and type Model.Record.t = ModelType.Record.t
+  ) => {
+  module Model = ModelType;
+  module Root = Schema.Root;
 
+  let _defaultData = Model._defaultData;
+
+  type model = Model.Record.t;
+  type Domain.RootModel.record += Record(model);
+  type Root.t += Schema;
+  type Root.id += Id(UUID.t);
+
+  // type Root.t += Schema = Schema;
+  // type Root.id += Id = Id;
+
+  type _data = Root.data;
+
+  type _record = Domain.RootModel.record;
+  type _t = Root.t;
+  type _id = Root.id;
+
+  type record = (_record, Domain.SchemaType.t);
+
+  module Wrapper = {
+    type rootRecord = _record;
     type model = Model.Record.t;
-    type Root.record += Record(model);
-    type _data = Root.data;
-    type _record = Root.record;
-    type record = (_record, _t);
+    let wrapNonRoot = (model: model) : record => (Record(model), Type);
+    let unwrapNonRoot = (record: record): option(model) =>
+      switch (record) {
+      | (Record(model), _) => Some(model)
+      | _ => None
+      };
 
-    module Wrapper = {
-      type rootRecord = _record;
-      type model = Model.Record.t;
-      let wrapNonRoot = (model: model) : record => (Record(model), Type);
-      let unwrapNonRoot = (record: record): option(model) =>
-        switch (record) {
-        | (Record(model), _) => Some(model)
-        | _ => None
-        };
-
-      let wrap = (model: model) : _record => Record(model);
-      let unwrap = (record: _record): option(model) =>
-        switch (record) {
-        | Record(model) => Some(model)
-        | _ => None
-        };
-      let apolloEnabled = true;
-    }
+    let wrap = (model: model) : _record => Record(model);
+    let unwrap = (record: _record): option(model) =>
+      switch (record) {
+      | Record(model) => Some(model)
+      | _ => None
+      };
+    let apolloEnabled = true;
   }
 };
 
-module type NormalizrGeneratorType {
+module type NORMALIZR_GENERATOR_TYPE {
   type id;
   type t;
   type record;
@@ -126,68 +132,73 @@ module type NormalizrGeneratorType {
 
   let modelTypeToRecordType: (record) => (t, UUID.t);
 
-  let normalizerCommitItemToSchema: (normalizedType, RootModel.record) => normalizedType;
-
+  let normalizerCommitItemToSchema: (normalizedType, record) => normalizedType;
 };
 
 module AddRecord(
-  NormalizrGenerator: NormalizrGeneratorType
-    with type id = RootModel.id
-    and type t = RootModel.t
-    and type record = RootModel.record,
-  Record : Domain.ModelRecordType
-    with type Model.ModelSchema.t = RootModel.t
-    and type Model.ModelSchema._id = RootModel.id
-    and type _record = RootModel.record
+  Record : Domain.MODEL_RECORD,
+  NormalizrGenerator: NORMALIZR_GENERATOR_TYPE
+    with type id = Domain.RootModel.id
+    and type t = Domain.RootModel.t
+    and type record = Domain.RootModel.record
+  ,
 ) : (
-  NormalizrGeneratorType
-    with type id = Record.Model.ModelSchema._id
-    and type t = Record.Model.ModelSchema.t
-    and type record = Record._record
-    and type normalizedType = NormalizrNew.normalizedSchema(RootModel.t, UUID.t, RootModel.record)
+  NORMALIZR_GENERATOR_TYPE
+    with type id = Domain.RootModel.id
+    and type t = Domain.RootModel.t
+    and type record = Domain.RootModel.record
+    and type normalizedType = NormalizrNew.normalizedSchema(Domain.RootModel.t, UUID.t, Domain.RootModel.record)
 ) {
-  type id = Record.Model.ModelSchema._id;
-  type t = Record.Model.ModelSchema.t;
-  type record = Record._record;
 
-  type normalizedType = NormalizrNew.normalizedSchema(RootModel.t, UUID.t, RootModel.record);
+  type id = Domain.RootModel.id;
+  type t = Domain.RootModel.t;
+  type record = Domain.RootModel.record;
+
+  type Domain.RootModel.id += Id(UUID.t);
+  type Domain.RootModel.t += Schema;
+  type Domain.RootModel.record += Record(Record.Model.Record.t);
+
+  type normalizedType = NormalizrNew.normalizedSchema(t, UUID.t, record);
 
   let modelIdToIdFunction = (id: id): (t, UUID.t) => {
     switch(id){
-    | Record.Model.ModelSchema.Id(uuid) => (Record.Model.ModelSchema.Schema, uuid)
+    | Id(uuid) => (Schema, uuid)
     | _ => NormalizrGenerator.modelIdToIdFunction(id)
     };
   };
   
-  let modelTypeToRecordType = (record: RootModel.record): (RootModel.t, UUID.t) => {
+  let modelTypeToRecordType = (record: record): (t, UUID.t) => {
     switch(record){
-    | Record.Record(model) => (Record.Model.ModelSchema.Schema, Record.Model.Record.findId(model))
+    | Record(model) => (
+      Schema,
+      Record.Model.Record.findId(model)
+    )
     | _ => NormalizrGenerator.modelTypeToRecordType(record)
     };
   };
 
   let normalizerCommitItemToSchema:
-    (normalizedType, RootModel.record) => normalizedType =
+    (normalizedType, record) => normalizedType =
       NormalizrNew.Normalizr.commitItemToSchema(modelTypeToRecordType);
 };
 
 module EmptyNormalizr(
-  Root: RootModelType
-    with type id = RootModel.id
-    and type t = RootModel.t
-    and type record = RootModel.record
+  Root: Domain.ROOT_MODEL
+    with type id = Domain.RootModel.id
+    and type t = Domain.RootModel.t
+    and type record = Domain.RootModel.record
 ) : (
-  NormalizrGeneratorType
-    with type id = Root.id
-    and type t = Root.t
-    and type record = Root.record
+  NORMALIZR_GENERATOR_TYPE
+    with type id = Domain.RootModel.id
+    and type t = Domain.RootModel.t
+    and type record = Domain.RootModel.record
     and type normalizedType = NormalizrNew.normalizedSchema(Root.t, UUID.t, Root.record)
 ) = {
   module Implementation = {
-    type id = Root.id;
-    type t = Root.t;
-    type record = Root.record;
-    type normalizedType = NormalizrNew.normalizedSchema(Root.t, UUID.t, Root.record);
+    type id = Domain.RootModel.id;
+    type t = Domain.RootModel.t;
+    type record = Domain.RootModel.record;
+    type normalizedType = NormalizrNew.normalizedSchema(t, UUID.t, record);
 
     let modelIdToIdFunction = (id: id): (t, UUID.t) => {
       switch(id){
@@ -206,20 +217,23 @@ module EmptyNormalizr(
     let normalizerCommitItemToSchema:
       (normalizedType, Root.record) => normalizedType =
         NormalizrNew.Normalizr.commitItemToSchema(modelTypeToRecordType);
-  }
+  };
   
   include Implementation;
 
   module AddRecord = (
-    Domain : Domain.ModelRecordType
-      with type Model.ModelSchema.t = RootModel.t
-      and type Model.ModelSchema._id = RootModel.id
-      and type _record = RootModel.record
-  ) => AddRecord(Implementation, Domain);
+    Domain : Domain.MODEL_RECORD
+      with type Model.InternalSchema.t = Domain.RootModel.t
+      and type Model.InternalSchema.id = Domain.RootModel.id
+      and type _record = Domain.RootModel.record
+  ) => AddRecord(
+    Domain,
+    Implementation
+  );
 };
 
 module CreateFakeLocal() : (
-  Domain.LocalRecord
+  Domain.LOCAL_RECORD
     with type _record = unit
 ) {
 
@@ -232,3 +246,86 @@ module CreateFakeLocal() : (
     let default = (id: UUID.t) => ();
   };
 }
+
+module BuildModel(
+  ModelRecord : Domain.RECORD,
+  ModelSchemaType : Domain.SCHEMA_TYPE,
+  Fragment : Domain.FRAGMENT
+    with type data = ModelRecord._data
+): (
+  Domain.MODEL
+    with module ModelRecord = ModelRecord
+    and module ModelSchemaType = ModelSchemaType
+    and module InternalSchema = ModelSchemaType.Root
+    and module Fragment = Fragment
+    and type _data = ModelRecord._data
+    and type idType = ModelSchemaType.id
+    and type rootIdType = Domain.RootModel.id
+    and type _record = ModelRecord._record
+    and type _local = ModelRecord.Local.Record.t
+    and type Record.defaultParam = ModelRecord.defaultParam
+) {
+  
+  module ModelSchemaType = ModelSchemaType;
+  module InternalSchema = ModelSchemaType.Root;
+  // module Root = RootModel;
+  
+  module Fragment = Fragment;
+
+  /* ModelSchema */
+
+  module ModelRecord = ModelRecord;
+  type _record = ModelRecord._record;
+
+  type rootIdType = Domain.RootModel.id;
+  
+  /* ModelSchema */
+
+
+  type idType = ModelSchemaType.id;
+  let idToRootId = ModelSchemaType.idToRootId;
+  let getUUIDFromId = (id: idType): UUID.t => ModelSchemaType.idToString(id);
+  let idToTypedId = (id: UUID.t): idType => ModelSchemaType.stringToId(id);
+
+  /* ModelRecord */
+  type _data = ModelRecord._data;
+  type _local = ModelRecord.Local.Record.t;
+  let _defaultData = ModelRecord._defaultData;
+  let _defaultRecordId = ModelRecord._defaultRecordId;
+  let _defaultRecord = ModelRecord._defaultRecord;
+
+  // type _record = RecordType.Type.t(ModelRecord._data, Local.Record.t);
+
+  /* Fragment */
+  let fragmentType = Fragment.fragmentType;
+  let fragmentName = Fragment.Fields.name;
+  let objectToId = (obj: Fragment.Fields.t): idType => Fragment.toId(obj) |> idToTypedId;
+
+  /* Record */
+  module Record = {
+    type t = _record;
+    type defaultParam = ModelRecord.defaultParam;
+    type defaultFn = (ModelRecord.defaultParam, idType) => t;
+    let findId = ModelRecord.findId;
+
+    module Local = ModelRecord.Local;
+
+    module Data = {
+      type t = _data;
+
+      let fromObject = Fragment.fromObject;
+    };
+    let default = _defaultRecord;
+    let defaultWithId = (param: defaultParam, id) =>
+      ModelRecord._defaultWithId(param, id |> getUUIDFromId);
+
+    let fromObject = (obj: Fragment.Fields.t): t => {
+      data: Fragment.fromObject(obj),
+      local: ModelRecord.Local.Record.default(Fragment.toId(obj))
+    };
+  };
+};
+
+/* module ModelSchema = Schema.User;
+  module ModelRecord = User_Record;
+  module Fragment = User_Fragment; */

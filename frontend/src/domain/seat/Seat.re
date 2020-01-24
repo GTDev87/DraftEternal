@@ -1,7 +1,7 @@
 module Model = Seat_Model.M;
 
 module ModelSchema = Schema.Seat;
-module Record = ModelSchema.AddModel(Model);
+module Record = ModelUtils.AddModel(ModelSchema, Model);
 
 module Action = Seat_Action;
 module Mutation = Seat_Mutation;

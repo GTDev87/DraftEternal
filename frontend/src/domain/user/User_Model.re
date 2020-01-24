@@ -1,14 +1,18 @@
+// module M = ModelUtils.BuildModel(User_Record, Schema.User, User_Fragment);
+
 module M = {
-  type rootIdType = ModelUtils.RootModel.id;
-  module ModelSchema = Schema.User;
+  module ModelSchemaType = Schema.User;
+  module InternalSchema = ModelSchemaType.Root;
   module ModelRecord = User_Record;
   module Fragment = User_Fragment;
 
-  /* ModelSchema */
-  type idType = ModelSchema.id;
-  let idToRootId = ModelSchema.idToRootId;
-  let getUUIDFromId = (id: idType): UUID.t => ModelSchema.idToString(id);
-  let idToTypedId = (id: UUID.t): idType => ModelSchema.stringToId(id);
+  type rootIdType = Domain.RootModel.id;
+
+  /* ModelSchemaType */
+  type idType = ModelSchemaType.id;
+  let idToRootId = ModelSchemaType.idToRootId;
+  let getUUIDFromId = (id: idType): UUID.t => ModelSchemaType.idToString(id);
+  let idToTypedId = (id: UUID.t): idType => ModelSchemaType.stringToId(id);
 
   /* ModelRecord */
   type _data = ModelRecord._data;

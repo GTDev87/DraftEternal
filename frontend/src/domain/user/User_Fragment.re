@@ -28,3 +28,5 @@ let fromObject = (obj: Fields.t): data => {
       |> Belt.List.map(_, Cube_Model.M.objectToId),
   };
 }
+
+let toId = (obj) => obj##id;
