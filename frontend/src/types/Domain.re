@@ -95,6 +95,7 @@ module type MODEL = {
 
   let idToRootId: (ModelSchemaType.id) => RootModel.id;
   let getUUIDFromId: (ModelSchemaType.id) => UUID.t;
+  let idToTypedId: (UUID.t) => idType;
 
   module rec Fragment: {
     module Fields: ReasonApolloTypes.Config;
