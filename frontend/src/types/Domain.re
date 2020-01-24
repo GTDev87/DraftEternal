@@ -44,7 +44,6 @@ module SchemaType = {
 module type RECORD = {
   module Local: LOCAL_RECORD;
 
-
   type _data;
   type _record = RecordType.Type.t(_data, Local.Record.t);
 
@@ -56,9 +55,6 @@ module type RECORD = {
   let findId: (_record) => UUID.t;
 
   let _defaultWithId: (defaultParam, UUID.t) => _record;
-  /* module Data: {
-    let fromObject: () =>
-  }; */
 };
 
 type typeWithId = {. "id": string};
@@ -136,7 +132,6 @@ module type DOMAIN_WRAPPER = {
 module type MODEL_RECORD {
   module Model: MODEL;
   module Wrapper: DOMAIN_WRAPPER;
-  module Root: ROOT_MODEL;
 
   type model;
   type _data;
@@ -146,8 +141,8 @@ module type MODEL_RECORD {
   // type _t = ROOT_MODEL.t;
   // type _id = ROOT_MODEL.id;
   
-  type Root.t += Schema;
-  type Root.id += Id(UUID.t);
+  type RootModel.t += Schema;
+  type RootModel.id += Id(UUID.t);
   type RootModel.record += Record(Model.Record.t);
 
   // type _t += Schema = ROOT_MODEL.Schema;

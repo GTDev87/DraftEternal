@@ -74,8 +74,7 @@ module AddModel = (
 ) :
   (Domain.MODEL_RECORD
     with module Model = ModelType
-    and module Root = Schema.Root
-    and type _data = Schema.Root.data
+    and type _data = Domain.RootModel.data
     and type _record = Domain.RootModel.record
     and type model = ModelType.Record.t
     and type Wrapper.model = ModelType.Record.t
@@ -83,23 +82,22 @@ module AddModel = (
     and type Model.Record.t = ModelType.Record.t
   ) => {
   module Model = ModelType;
-  module Root = Schema.Root;
 
   let _defaultData = Model._defaultData;
 
   type model = Model.Record.t;
   type Domain.RootModel.record += Record(model);
-  type Root.t += Schema;
-  type Root.id += Id(UUID.t);
+  type Domain.RootModel.t += Schema;
+  type Domain.RootModel.id += Id(UUID.t);
 
   // type Root.t += Schema = Schema;
   // type Root.id += Id = Id;
 
-  type _data = Root.data;
+  type _data = Domain.RootModel.data;
 
   type _record = Domain.RootModel.record;
-  type _t = Root.t;
-  type _id = Root.id;
+  type _t = Domain.RootModel.t;
+  type _id = Domain.RootModel.id;
 
   type record = (_record, Domain.SchemaType.t);
 
