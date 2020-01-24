@@ -81,7 +81,6 @@ module type MODEL = {
 
   type _local;
 
-  // module InternalSchema : ROOT_MODEL;
   module ModelRecord : RECORD;
   type _data = ModelRecord._data;
   type _record = ModelRecord._record;
@@ -138,15 +137,9 @@ module type MODEL_RECORD {
   type _record;
   type _record += Record(Model.Record.t);
 
-  // type _t = ROOT_MODEL.t;
-  // type _id = ROOT_MODEL.id;
-  
   type RootModel.t += Schema;
   type RootModel.id += Id(UUID.t);
   type RootModel.record += Record(Model.Record.t);
-
-  // type _t += Schema = ROOT_MODEL.Schema;
-  // type _id += Id = ROOT_MODEL.Id;
 };
 
 module type FRAGMENT = {

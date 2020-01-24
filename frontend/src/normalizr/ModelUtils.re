@@ -15,22 +15,6 @@ let getConnectionList = (items, idFunction) =>
   |> Belt.List.fromArray
   |> Belt.List.map(_, (edge) => Belt.Option.map(edge, (e) => idFunction(e##node)));
 
-
-// module Root: ROOT_MODEL;
-
-//   /* module CreatedType: SchemaType; */
-
-//   type id;
-//   type _t =  SchemaType.t;
-//   type _id;
-
-//   let idToString: (id) => UUID.t
-//   let idToRootId: (id) => _id;
-//   let stringToId: (UUID.t) => id;
-
-//   module AddModel: (ModelType : MODEL) => MODEL_RECORD;
-// };
-
 module GenerateModel = (Root: Domain.ROOT_MODEL, ()): (
   Domain.SCHEMA_TYPE
     with module Root = Root
@@ -43,7 +27,6 @@ module GenerateModel = (Root: Domain.ROOT_MODEL, ()): (
 
   type Domain.RootModel.id += Id(UUID.t);
   type Domain.RootModel.id += Id = Id;
-
 
   type t = Root.t;
   type id = (Domain.RootModel.id, _t);
@@ -89,9 +72,6 @@ module AddModel = (
   type Domain.RootModel.record += Record(model);
   type Domain.RootModel.t += Schema;
   type Domain.RootModel.id += Id(UUID.t);
-
-  // type Root.t += Schema = Schema;
-  // type Root.id += Id = Id;
 
   type _data = Domain.RootModel.data;
 
@@ -266,40 +246,28 @@ module BuildModel(
   
   module ModelSchemaType = ModelSchemaType;
   module InternalSchema = ModelSchemaType.Root;
-  // module Root = RootModel;
-  
   module Fragment = Fragment;
-
-  /* ModelSchema */
-
   module ModelRecord = ModelRecord;
+
   type _record = ModelRecord._record;
 
   type rootIdType = Domain.RootModel.id;
   
-  /* ModelSchema */
-
-
   type idType = ModelSchemaType.id;
   let idToRootId = ModelSchemaType.idToRootId;
   let getUUIDFromId = (id: idType): UUID.t => ModelSchemaType.idToString(id);
   let idToTypedId = (id: UUID.t): idType => ModelSchemaType.stringToId(id);
 
-  /* ModelRecord */
   type _data = ModelRecord._data;
   type _local = ModelRecord.Local.Record.t;
   let _defaultData = ModelRecord._defaultData;
   let _defaultRecordId = ModelRecord._defaultRecordId;
   let _defaultRecord = ModelRecord._defaultRecord;
 
-  // type _record = RecordType.Type.t(ModelRecord._data, Local.Record.t);
-
-  /* Fragment */
   let fragmentType = Fragment.fragmentType;
   let fragmentName = Fragment.Fields.name;
   let objectToId = (obj: Fragment.Fields.t): idType => Fragment.toId(obj) |> idToTypedId;
 
-  /* Record */
   module Record = {
     type t = _record;
     type defaultParam = ModelRecord.defaultParam;
@@ -323,7 +291,3 @@ module BuildModel(
     };
   };
 };
-
-/* module ModelSchema = Schema.User;
-  module ModelRecord = User_Record;
-  module Fragment = User_Fragment; */
