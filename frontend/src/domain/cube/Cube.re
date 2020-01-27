@@ -5,4 +5,4 @@ module Record = ModelUtils.AddModel(ModelSchema, Model);
 
 module Action = Cube_Action;
 module Mutation = Cube_Mutation;
-module Container = ApolloFragment.Container(ApolloClient.ReadFragment, Model);
+module Container = Container.M(Model);

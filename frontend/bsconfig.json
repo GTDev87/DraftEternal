@@ -19,7 +19,8 @@
     "reason-apollo",
     "@glennsl/bs-json",
     "re-debouncer",
-    "reason-react-update"
+    "reason-react-update",
+    "domain-renormalizr"
   ],
   "ppx-flags": [
     "graphql_ppx/ppx"
