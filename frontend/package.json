@@ -24,7 +24,7 @@
     "apollo-link-error": "1.1.11",
     "apollo-link-http": "1.5.15",
     "apollo-link-ws": "1.0.18",
-    "bootstrap": "4.0.0",
+    "bootstrap": "4.3.1",
     "d3-array": "1.2.1",
     "domain-renormalizr": "^0.0.0",
     "emotion": "^9.2.12",
